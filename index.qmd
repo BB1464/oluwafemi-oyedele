@@ -17,7 +17,7 @@ aliases:
 
 ::: {.g-col-12 .g-col-md-9}
 ## About Me
-Oluwafemi Oyedele is a research assistant at the International Institute of Tropical Agriculture (IITA) specializing in the cocoa soils project. I obtained  a Master's degree in Agrometeorology from the University of Ibadan with distinction. Oluwafemi's work involves studying soil properties, nutrient dynamics, and other factors that affect cocoa production in tropical regions. I have a strong interest in processed-based modeling, which focuses on simulating and predicting complex processes in natural systems. 
+I am currently a research assistant at the International Institute of Tropical Agriculture (IITA) specializing in the cocoa soils project. I obtained  a Master's degree in Agrometeorology from the University of Ibadan with distinction. Oluwafemi's work involves studying soil properties, nutrient dynamics, and other factors that affect cocoa production in tropical regions. I have a strong interest in processed-based modeling, which focuses on simulating and predicting complex processes in natural systems. 
 
 :::
 :::
