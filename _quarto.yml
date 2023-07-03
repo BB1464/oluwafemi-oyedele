@@ -1,0 +1,56 @@
+project:
+  type: website
+  resources: data
+
+website:
+  title: "Oluwafemi Oyedele"
+  image: images/oluwafemi.jpg
+  # cookie-consent: true
+  search: 
+    location: navbar
+    type: textbox
+  navbar:
+    background: primary
+    pinned: true
+    left:
+      # - text: About
+      #   href: index.qmd
+      - text: Research 
+        href: research/index.qmd
+      - text: People
+        href: people/index.qmd
+      - text: Projects
+        href: projects/index.qmd
+      - text: Publications
+        href: publications/index.qmd
+      - text: Software
+        href: software/index.qmd
+      - text: Positions
+        href: positions/index.qmd
+      - text: CV
+        href: cv/index.qmd
+    right:
+    - icon: envelope
+      aria-label: email
+      href: "mailto:oluwafemioyedele908@gmail.com"
+    - icon: github
+      href: https://github.com/BB1464
+    - icon: google
+      href: https://scholar.google.com/citations?user=V40KA_IAAAAJ&hl=en
+    - icon: twitter
+      href: https://twitter.com/OluwafemOyedele
+    #- icon: mastodon
+     # href: https://fosstodon.org/@paul_buerkner
+  page-footer: 
+    left: "Copyright 2023, Oluwafemi Oyedele" 
+    right: 
+      - text: Impressum
+        href: impressum/index.qmd
+
+format:
+  html:
+    fontsize: 1.1em
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
