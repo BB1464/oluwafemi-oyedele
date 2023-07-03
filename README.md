@@ -1,5 +1,5 @@
-# My Personal Website
-This repository contains all the files used in building my personal website
+# My Personal Website with Quarto
+This repository contains all the files used in building my personal website with quarto
 
 ## License
 
