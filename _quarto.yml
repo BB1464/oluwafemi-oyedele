@@ -30,16 +30,19 @@ website:
         href: positions/index.qmd
       - text: CV
         href: cv/index.qmd
-    right:
-    - icon: envelope
-      aria-label: email
-      href: "mailto:oluwafemioyedele908@gmail.com"
-    - icon: github
-      href: https://github.com/BB1464
-    - icon: google
-      href: https://scholar.google.com/citations?user=V40KA_IAAAAJ&hl=en
-    - icon: twitter
-      href: https://twitter.com/OluwafemOyedele
+#    right:
+    #- icon: envelope
+     # aria-label: email
+      #href: "mailto:oluwafemioyedele908@gmail.com"
+    #- icon: github
+     # href: https://github.com/BB1464
+    #- icon: google
+     # href: https://scholar.google.com/citations?user=V40KA_IAAAAJ&hl=en
+    #- icon: twitter
+     # href: https://twitter.com/OluwafemOyedele
+    #- icon: linkedin
+     # text: LinkedIn
+      #href: https://www.linkedin.com/in/oluwafemioyedele/
     #- icon: mastodon
      # href: https://fosstodon.org/@paul_buerkner
   page-footer: 
