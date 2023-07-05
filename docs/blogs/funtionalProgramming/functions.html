@@ -6,6 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Oluwafemi Oyedele">
+<meta name="dcterms.date" content="2023-06-07">
+<meta name="description" content="This post will introduce you to how to use purrr pacakge to automate task in R">
 
 <title>Oluwafemi Oyedele - Functional Programming with Purrr</title>
 <style>
@@ -57,23 +60,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -95,7 +98,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -105,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Oluwafemi Oyedele</span>
     </a>
   </div>
@@ -116,27 +119,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../research/index.html" rel="" target="">
+    <a class="nav-link" href="../../research/index.html" rel="" target="">
  <span class="menu-text">Research</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../publications/index.html" rel="" target="">
+    <a class="nav-link" href="../../publications/index.html" rel="" target="">
  <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../blogs/index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../blog.html" rel="" target="">
  <span class="menu-text">Blogs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../talks/index.html" rel="" target="">
+    <a class="nav-link" href="../../talks/index.html" rel="" target="">
  <span class="menu-text">Talks</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../training/index.html" rel="" target="">
+    <a class="nav-link" href="../../training/index.html" rel="" target="">
  <span class="menu-text">Training</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../cv/index.html" rel="" target="">
+    <a class="nav-link" href="../../cv/index.html" rel="" target="">
  <span class="menu-text">CV</span></a>
   </li>  
 </ul>
@@ -152,7 +155,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#load-r-packages" id="toc-load-r-packages" class="nav-link" data-scroll-target="#load-r-packages">Load R packages</a></li>
+  </ul></li>
+  <li><a href="#set-the-names" id="toc-set-the-names" class="nav-link" data-scroll-target="#set-the-names">Set the names</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -160,13 +173,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Functional Programming with Purrr</h1>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">123</div>
+    <div class="quarto-category">Second Tag</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    This post will introduce you to how to use purrr pacakge to automate task in R
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Oluwafemi Oyedele </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 7, 2023</p>
+    </div>
+  </div>
   
     
   </div>
@@ -174,6 +208,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>When you have a lot of variables and need to make multiple exploratory plots it’s usually worthwhile to automate the process in R instead of manually copying and pasting code for every plot, this thing happen to me a lot but when I read Hadley Wickham <code>Advance R</code> on <code>functional programming</code>, I knew that what I was doing was wrong. However, the coding approach needed to automate plots can look pretty daunting to a beginner R user. It can look so daunting, in fact, that it can appear easier to manually make the plots (like in Excel) rather than using R at all.</p>
 <p>Unfortunately making plots manually can backfire. The efficiency of using a software program you already know is quickly out-weighed by being unable to easily reproduce the plots when needed. I know I invariably have to re-make even exploratory plots, and it’d be a bummer if I had to remake them all manually rather than re-running some code.</p>
 <p>So while I often assure students working under time constraints that it is perfectly OK to use software they already know rather than spending the time to learn how to do something in R, making many plots is a special case. To get them started I will provide students who need to automate plotting in R some example code (with explanation).</p>
@@ -213,6 +249,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The goal is to make scatter plots for every response variable vs every explanatory variable. I’ve deemed the first three variables in the data set to be the response variables (elev, resp, grad). The plan is to loop through the variables and make the desired plots. I’m going to use vectors of the variable names for this, one vector for the response variables and one for the explanatory variables. If all of your response or explanatory variables share some unique pattern in the variable names there are some clever ways to pull out the names with some of the select helper functions in dplyr::select(). My variable names are all unique. My options are to either write the vectors out manually or pull the names out by index. I’ll do the latter since the different types of variables are grouped together.</p>
+</section>
+</section>
+</section>
+<section id="set-the-names" class="level1">
+<h1>Set the names</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">=</span> <span class="fu">names</span>(dat)[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>expl <span class="ot">=</span> <span class="fu">names</span>(dat)[<span class="dv">4</span><span class="sc">:</span><span class="dv">7</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -234,7 +275,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  "slp"  "lat" "long"   "nt" </code></pre>
 </div>
 </div>
-</section>
 <section id="create-a-plotting-function" class="level3">
 <h3 class="anchored" data-anchor-id="create-a-plotting-function">Create a plotting function</h3>
 <p>Since I’m going to make a bunch of plots that will all have the same basic form, I will make a plotting function. I am going to make a function where only the x and y variables can vary (so are arguments to the function). Since I’m making a function to plot variables from a single data set I’m going to hard-code the data set into the function. If you have multiple data sets or you are making a function for use across projects you’ll probably want to add the data set as a function argument. My functions inputs are based on the variable names, so I need to pass strings into the ggplot2 functions. Strings cannot be used directly in <code>aes()</code>, but can be used with the .data pronoun. I’m making pretty basic graphs since these are exploratory plots, not publication-ready plots. I will make a <code>scatter plot</code> and add locally weighted regression <code>(loess)</code> lines via <code>geom_smooth()</code>. I use such lines with great caution, as it can be easy to get too attached any pattern the <code>loess</code> line shows.</p>
@@ -257,11 +297,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="heres-an-example-of-the-function-output-passing-in-x-and-y-as-strings.">Here’s an example of the function output, passing in x and y as strings.</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">scatter_fun</span>(<span class="at">x =</span> <span class="st">"lat"</span>, <span class="at">y =</span> <span class="st">"elev"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -273,49 +310,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="here-i-will-use-the-map-function-from-purrr-package-for-looping.">Here I will use the map function from purrr package for looping.</h3>
 <p>I pass each explanatory variable to the first argument in scatter_fun() and I fix the second argument to “elev”. I use the formula coding in map() and so refer to the element of the explanatory vector via .x within scatter_fun().</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>elev_plots <span class="ot">=</span> <span class="fu">map</span>(<span class="at">.x =</span> expl, <span class="at">.f =</span> <span class="sc">~</span><span class="fu">scatter_fun</span>(<span class="at">x =</span> .x, <span class="at">y =</span> <span class="st">"elev"</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>elev_plots <span class="ot">=</span> <span class="fu">map</span>(<span class="at">.x =</span> expl, <span class="at">.f =</span> <span class="sc">~</span><span class="fu">scatter_fun</span>(<span class="at">x =</span> .x, <span class="at">y =</span> <span class="st">"elev"</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The output is a list of 4 plots (since there are 4 explanatory variables). You’ll notice that each element of the list has the variable name associated with it. This is why I used set_names() earlier, since this is convenient for printing the plots and, you’ll see later, is convenient when saving the plots in files with understandable names.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>elev_plots</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>elev_plots</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$slp</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $lat</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $long</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $nt</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -323,58 +348,46 @@ $nt</code></pre>
 <h3 class="anchored" data-anchor-id="looping-through-both-vectors">Looping through both vectors</h3>
 <p>For only a few response variables we could easily copy and paste the code above, changing the hard-coded response variable each time. This process can get burdensome if there are a lot of response variables, though. Using a <code>nested loop</code> is another option which involve looping through both vectors of variables to make all the plots at once. Because we want a plot for each combination of variables, this is a job for a nested loop. This means <code>one map() loop</code> will be <code>nested inside another</code>. <code>I will refer to the first map() loop as the outer loop</code> and <code>the second one as the inner loop</code>. I’m going to run through the response variables in the outer loop and the explanatory variables in the inner loop. That way I can graph all of the explanatory variables for each response variable before moving on to the next response variable. <code>This puts the output, a nested list</code>, in a logical order. <code>A nested loop involves more complicated code</code>. It took some effort for me to wrap my head around how to refer to the list element from the outer loop within the inner loop when using the map() formula coding with the tilde <code>(~)</code>. I found the answers/comments to this question on Stack Overflow to be helpful. Since my scatter plot function is so simple I ended up using formula coding for the outer loop and the function as in the inner loop. The inner list elements are fed to the first argument of scatter_fun() by default, which works out great since the first argument is the x variable and the inner loop loops through the explanatory variables. The .x then refers to the outer list elements (the response variable names), and is passed to the y argument of the function in the inner loop.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>all_plots <span class="ot">=</span> <span class="fu">map</span>(<span class="at">.x =</span> response,</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">.f=</span><span class="sc">~</span> <span class="fu">map</span>(<span class="at">.x =</span> expl, <span class="at">.f =</span> scatter_fun, <span class="at">y =</span> .x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>all_plots <span class="ot">=</span> <span class="fu">map</span>(<span class="at">.x =</span> response,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">.f=</span><span class="sc">~</span> <span class="fu">map</span>(<span class="at">.x =</span> expl, <span class="at">.f =</span> scatter_fun, <span class="at">y =</span> .x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To be honest, I think it is fairly hard to follow what the above code is doing. And I’ve found it difficult to use such an approach if adding additional nested loops. At the end of the day, using anonymous functions involves more code but the results may be easier to understand. Well, as easy to follow as nested loops ever are. Here’s the same plots using anonymous functions in each map() loop.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>all_plots2 <span class="ot">=</span> <span class="fu">map</span>(response, <span class="cf">function</span>(resp) {</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(expl, <span class="cf">function</span>(expl) {</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scatter_fun</span>(<span class="at">x =</span> expl, <span class="at">y =</span> resp)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>all_plots2 <span class="ot">=</span> <span class="fu">map</span>(response, <span class="cf">function</span>(resp) {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(expl, <span class="cf">function</span>(expl) {</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scatter_fun</span>(<span class="at">x =</span> expl, <span class="at">y =</span> resp)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The output is a list of lists. Each sub-list contains all the plots for a single response variable. Because I set the names for both vectors of variable names, the inner and outer lists both have names. These names can be used to pull out individual plots. For example, if I want to see all the plots for the grad response variable I can print that sub-list by name. (I’m going to display only two of four grad plots here to save space.)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>all_plots<span class="sc">$</span>grad[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>all_plots<span class="sc">$</span>grad[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$slp</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $lat</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>If I want to print a single plot, I can first extract one of the sub-lists using an outer list name and then extract the individual plot via an inner list name.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>all_plots<span class="sc">$</span>grad<span class="sc">$</span>long</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>all_plots<span class="sc">$</span>grad<span class="sc">$</span>long</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>I find the names convenient, but you can also extract plots via position. Here’s the same graph, the third element of the third list.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>all_plots[[<span class="dv">3</span>]][[<span class="dv">3</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>all_plots[[<span class="dv">3</span>]][[<span class="dv">3</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -382,8 +395,8 @@ $lat</code></pre>
 <h3 class="anchored" data-anchor-id="combining-variables-for-a-single-loop">Combining variables for a single loop</h3>
 <p>Since nested loops can be complicated, another option is to create all combinations of the two input vectors and then loop through the vectors in a single loop. This can be done, for example, using <code>tidyr::expand_grid()</code>. The main thing I like about <code>tidyr::expand_grid()</code> over <code>expand.grid()</code> from base R is the order of the output. Both put the results into a data set (data.frame or tibble). Here’s how that would look, putting the response variables first to match the output order above. I’m using <code>tidyr version 1.1.4</code> here.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>resp_expl <span class="ot">&lt;-</span>  tidyr<span class="sc">::</span><span class="fu">expand_grid</span>(expl,response)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>resp_expl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>resp_expl <span class="ot">&lt;-</span>  tidyr<span class="sc">::</span><span class="fu">expand_grid</span>(expl,response)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>resp_expl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 2
    expl  response
@@ -404,12 +417,12 @@ $lat</code></pre>
 </div>
 <p>I can now use <code>pmap()</code> from purrr to loop through the rows of this tibble. I have to be careful with my argument order, though, since I have the y variable first in the tibble but it is the second argument in my function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>allplots2 <span class="ot">=</span> <span class="fu">pmap</span>(<span class="at">.l =</span> resp_expl, <span class="at">.f =</span> <span class="sc">~</span><span class="fu">scatter_fun</span>(<span class="at">x =</span> .x, <span class="at">y =</span> .y) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>allplots2 <span class="ot">=</span> <span class="fu">pmap</span>(<span class="at">.l =</span> resp_expl, <span class="at">.f =</span> <span class="sc">~</span><span class="fu">scatter_fun</span>(<span class="at">x =</span> .x, <span class="at">y =</span> .y) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>I’m not going to print them here, but one minor downside of this approach is that only the first variable name is carried along to the output list. If I wanted to save these plots separately and use both the response and explanatory variable in the file name I’d need to create the file names based on <code>resp_expl</code>. I won’t show this in the next section on saving plots, so here is a quick example of creating basic file names based on both variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>allplots2_names <span class="ot">=</span> <span class="fu">pmap</span>(resp_expl, <span class="sc">~</span> <span class="fu">paste0</span>(.x, <span class="st">"_"</span>, .y, <span class="st">".png"</span>))</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>allplots2_names[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>allplots2_names <span class="ot">=</span> <span class="fu">pmap</span>(resp_expl, <span class="sc">~</span> <span class="fu">paste0</span>(.x, <span class="st">"_"</span>, .y, <span class="st">".png"</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>allplots2_names[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$slp
 [1] "slp_elev.png"
@@ -432,35 +445,23 @@ $slp
 <section id="in-this-example-code-i-save-the-file-which-i-name-all_scatterplots.pdf-into-my-current-working-directory." class="level3">
 <h3 class="anchored" data-anchor-id="in-this-example-code-i-save-the-file-which-i-name-all_scatterplots.pdf-into-my-current-working-directory.">In this example code I save the file, which I name all_scatterplots.pdf, into my current working directory.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"all_scatterplots.pdf"</span>)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>all_plots</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">"all_scatterplots.pdf"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>all_plots</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$elev
 $elev$slp</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $elev$lat</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $elev$long</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $elev$nt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -468,29 +469,17 @@ $elev$nt</code></pre>
 $resp
 $resp$slp</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $resp$lat</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $resp$long</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $resp$nt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -498,31 +487,19 @@ $resp$nt</code></pre>
 $grad
 $grad$slp</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $grad$lat</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $grad$long</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $grad$nt</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>png 
   2 </code></pre>
@@ -533,93 +510,57 @@ $grad$nt</code></pre>
 <h3 class="anchored" data-anchor-id="saving-groups-of-plots-together">Saving groups of plots together</h3>
 <p>Another option is to save each group of plots in a separate document. This might make sense in a case like this where there are a set of plots for each response variable and we might want a separate file for each set. To save each sub-list separately we’ll need to loop through all_plots and save the plots for each response variable into a separate file. The list names can be used in the file names to keep the output organized. The functions in purrr that start with i are special functions that loop through a list and the names of that list simultaneously. This is useful here where we want to use the list names to identify the output files while we save them. The <code>walk()</code> function is part of the map family, to be used when you want a function for its side effect instead of for a return value. Saving plots is a classic example of when we want <code>walk()</code> instead of <code>map()</code>. Combining the i and the walk gives us the <code>iwalk()</code> function. In the formula interface, .x refers to the list elements and .y refers to the names of the list. You can see I create the plot file names using the list name combined with “scatter plots.pdf”, using _ as the separator. The code below makes three files, one for each response variable, with four plots each. The files are named “elev_scatter plots.pdf”, “resp_scatter plots.pdf”, and “grad_scatter plots.pdf”.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">iwalk</span>(all_plots, <span class="sc">~</span> {</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pdf</span>(<span class="fu">paste0</span>(.y, <span class="st">"_scatterplots.pdf"</span>))</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(.x)</span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">iwalk</span>(all_plots, <span class="sc">~</span> {</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pdf</span>(<span class="fu">paste0</span>(.y, <span class="st">"_scatterplots.pdf"</span>))</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(.x)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$slp</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $lat</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $long</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $nt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $slp</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $lat</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $long</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $nt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $slp</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $lat</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $long</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $nt</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 </div>
 </section>
@@ -627,33 +568,19 @@ $nt</code></pre>
 <h3 class="anchored" data-anchor-id="saving-all-plots-separately">Saving all plots separately</h3>
 <p>All plots can be saved separately instead of combined in a single document. This might be necessary if you want to insert the plots into some larger document later. We’ll want to use the names of both the outer and inner lists to appropriately identify each plot we save. I decided to do this by looping through the all_plots list and the names of the list via <code>imap()</code> to make the file names in a separate step. This time I’m going to save these as PNG files so use .png at the end of the file name. The result is a list of lists, so I flatten this into a single list via flatten(). If I were to use flatten() earlier in the process I’d lose the names of the outer list. This process of combining names prior to flattening should be simplified once the proposed flatten_names() function is added to purrr.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>plotnames <span class="ot">=</span> <span class="fu">imap</span>(all_plots, <span class="sc">~</span> <span class="fu">paste0</span>(.y, <span class="st">"_"</span>, <span class="fu">names</span>(.x), <span class="st">".png"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flatten</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>plotnames <span class="ot">=</span> <span class="fu">imap</span>(all_plots, <span class="sc">~</span> <span class="fu">paste0</span>(.y, <span class="st">"_"</span>, <span class="fu">names</span>(.x), <span class="st">".png"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flatten</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Once the file names are created I can loop through all the file names and plots simultaneously with walk2() and save things via ggsave(). The height and width of each output file can be set as needed in ggsave(). You can see I flattened the nested list of plots into a single list to use in walk2().</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">walk2</span>(plotnames,</span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">flatten</span>(all_plots),</span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">ggsave</span>(</span>
-<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">filename =</span> .x,</span>
-<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot =</span> .y,</span>
-<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">height =</span> <span class="dv">7</span>,</span>
-<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">width =</span> <span class="dv">7</span></span>
-<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>      ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">walk2</span>(plotnames,</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">flatten</span>(all_plots),</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">ggsave</span>(</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">filename =</span> .x,</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot =</span> .y,</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">height =</span> <span class="dv">7</span>,</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">width =</span> <span class="dv">7</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>      ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="combining-plots" class="level3">
@@ -663,54 +590,34 @@ $nt</code></pre>
 <section id="heres-what-that-looks-like-for-the-first-response-variable-elev." class="level3">
 <h3 class="anchored" data-anchor-id="heres-what-that-looks-like-for-the-first-response-variable-elev.">Here’s what that looks like for the first response variable, elev.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(<span class="at">plotlist =</span> all_plots[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(<span class="at">plotlist =</span> all_plots[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>We can use a loop to combine the plots for each response variable sub-list. The result could then be saved using any of the approaches shown above. If you have many subplots per combined plot you likely will want to save the plots at a larger size so the individual plots can be clearly seen.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>response_plots <span class="ot">=</span> <span class="fu">map</span>(all_plots, <span class="sc">~</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(<span class="at">plotlist =</span> .x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'
-`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>response_plots</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>response_plots <span class="ot">=</span> <span class="fu">map</span>(all_plots, <span class="sc">~</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(<span class="at">plotlist =</span> .x))</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>response_plots</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$elev</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $resp</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $grad</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-22-3.png" class="img-fluid" width="672"></p>
+<p><img src="functions_files/figure-html/unnamed-chunk-22-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>To learn more on functional programming in R you can look at Jenny Bryan blog post on functional programming <a href="https://jennybc.github.io/purrr-tutorial/"><strong>here</strong></a></p>
@@ -720,6 +627,21 @@ $grad</code></pre>
 </section>
 
 </main> <!-- /main -->
+<div>
+<hr>
+
+<h3> Stay in touch </h3>
+
+<p> If you enjoyed this post, then don't miss out on any future posts by subscribing to my newsletter. </p>
+
+<iframe src="https://embeds.beehiiv.com/9232d2a2-6e85-4beb-b8ed-1de94e9e4f01?slim=true" data-test-id="beehiiv-embed" frameborder="0" scrolling="no" style="margin: 0; border-radius: 0px !important; background-color: transparent; height: 75px;width:400px;"></iframe>
+
+<h3> Share this post on </h3>
+
+<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-hashtags="#rstats" data-show-count="false">Tweet</a><script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<hr>
+</div>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1068,6 +990,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<script src="https://utteranc.es/client.js" repo="Oluwafemi/blogComments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
@@ -1078,7 +1002,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../impressum/index.html">Impressum</a>
+    <a class="nav-link" href="../../impressum/index.html">Impressum</a>
   </li>  
 </ul>
     </div>

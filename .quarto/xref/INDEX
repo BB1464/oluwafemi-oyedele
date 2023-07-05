@@ -25,5 +25,11 @@
   },
   "training/index.qmd": {
     "index.html": "443fe611"
+  },
+  "blogs/funtionalProgramming/functions.qmd": {
+    "functions.html": "4801844a"
+  },
+  "blog.qmd": {
+    "blog.html": "dca917e4"
   }
 }

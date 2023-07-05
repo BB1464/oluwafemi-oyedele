@@ -6,6 +6,8 @@ project:
 website:
   title: "Oluwafemi Oyedele"
   image: images/oluwafemi.jpg
+  # Add site-url (without trailing / at the end)
+  site-url: https://bb1464.github.io/oluwafemi-oyedele/
   # cookie-consent: true
   search: 
     location: navbar
@@ -21,7 +23,7 @@ website:
       - text: Publications
         href: publications/index.qmd
       - text: Blogs
-        href: blogs/index.qmd
+        href: blog.qmd
       - text: Talks
         href: talks/index.qmd
       - text: Training

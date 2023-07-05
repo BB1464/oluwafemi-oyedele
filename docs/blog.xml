@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Oluwafemi Oyedele</title>
+<link>https://bb1464.github.io/oluwafemi-oyedele/blog.html</link>
+<atom:link href="https://bb1464.github.io/oluwafemi-oyedele/blog.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<image>
+<url>https://bb1464.github.io/oluwafemi-oyedele/images/oluwafemi.jpg</url>
+<title>Oluwafemi Oyedele</title>
+<link>https://bb1464.github.io/oluwafemi-oyedele/blog.html</link>
+</image>
+<generator>quarto-1.3.353</generator>
+<lastBuildDate>Tue, 06 Jun 2023 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Functional Programming with Purrr</title>
+  <dc:creator>Oluwafemi Oyedele</dc:creator>
+  <link>https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions.html</link>
+  <description><![CDATA[ 
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>When you have a lot of variables and need to make multiple exploratory plots it’s usually worthwhile to automate the process in R instead of manually copying and pasting code for every plot, this thing happen to me a lot but when I read Hadley Wickham <code>Advance R</code> on <code>functional programming</code>, I knew that what I was doing was wrong. However, the coding approach needed to automate plots can look pretty daunting to a beginner R user. It can look so daunting, in fact, that it can appear easier to manually make the plots (like in Excel) rather than using R at all.</p>
+<p>Unfortunately making plots manually can backfire. The efficiency of using a software program you already know is quickly out-weighed by being unable to easily reproduce the plots when needed. I know I invariably have to re-make even exploratory plots, and it’d be a bummer if I had to remake them all manually rather than re-running some code.</p>
+<p>So while I often assure students working under time constraints that it is perfectly OK to use software they already know rather than spending the time to learn how to do something in R, making many plots is a special case. To get them started I will provide students who need to automate plotting in R some example code (with explanation).</p>
+<p>This post is based on an example that involves plotting bivariate relationships between many continuous variables.</p>
+<section id="load-r-packages" class="level2">
+<h2 class="anchored" data-anchor-id="load-r-packages">Load R packages</h2>
+<section id="load-the-necessary-library" class="level3">
+<h3 class="anchored" data-anchor-id="load-the-necessary-library">Load the necessary library</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(purrr)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(cowplot)</span></code></pre></div>
+</div>
+<p>I’ll be plotting with ggplot2 and looping with purrr package. I’ll also be using package <code>cowplot</code> later to combine individual plots into one, but will use the package functions via my name space <code>cowplot::</code> instead of loading the package.</p>
+</section>
+<section id="the-set-up" class="level3">
+<h3 class="anchored" data-anchor-id="the-set-up">The set-up</h3>
+<p>Here I’m going to make an example dataset with 3 response (y) variables and 4 explanatory (x) variables for plotting.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>)</span>
+<span id="cb2-2">dat <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">elev =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>( <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb2-3">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">resp =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>( <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb2-4">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">grad =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>( <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),</span>
+<span id="cb2-5">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">slp =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">round</span>( <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">35</span>),<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb2-6">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lat =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">44.5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>),</span>
+<span id="cb2-7">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">long =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">runif</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">122.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">123.1</span>),</span>
+<span id="cb2-8">                 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nt =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rpois</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lambda =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>) )</span>
+<span id="cb2-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(dat)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   elev resp grad  slp      lat     long nt
+1 373.2  9.7 0.05  8.8 44.54626 122.8547 18
+2 197.6  8.1 0.42 33.3 44.79495 122.5471 26
+3 280.0  5.4 0.38 19.3 44.99027 122.9645 18
+4 191.8  4.3 0.07 29.6 44.95022 122.7290 19
+5 445.4  2.3 0.43 16.5 44.79784 122.9836 15
+6 224.5  6.5 0.78  4.1 44.96576 122.9836 21</code></pre>
+</div>
+</div>
+<p>The goal is to make scatter plots for every response variable vs every explanatory variable. I’ve deemed the first three variables in the data set to be the response variables (elev, resp, grad). The plan is to loop through the variables and make the desired plots. I’m going to use vectors of the variable names for this, one vector for the response variables and one for the explanatory variables. If all of your response or explanatory variables share some unique pattern in the variable names there are some clever ways to pull out the names with some of the select helper functions in dplyr::select(). My variable names are all unique. My options are to either write the vectors out manually or pull the names out by index. I’ll do the latter since the different types of variables are grouped together.</p>
+</section>
+</section>
+</section>
+<section id="set-the-names" class="level1">
+<h1>Set the names</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">response <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">names</span>(dat)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]</span>
+<span id="cb4-2">expl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">names</span>(dat)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>]</span></code></pre></div>
+</div>
+<p>When I know I’m going to be looping through character vectors I like to use named vectors. This helps me keep track of things in the output. The set_names() function in purrr is super handy for naming character vectors, since it can use the values of the vector as names (i.e., the vector will be named by itself). (I don’t recommend trying this with lists of data.frames like I have in the past, though, since it turns out that naming a data.frame with a data.frame isn’t so useful.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">response <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set_names</span>(response)</span>
+<span id="cb5-2">response</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  elev   resp   grad 
+"elev" "resp" "grad" </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">expl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set_names</span>(expl)</span>
+<span id="cb7-2">expl</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   slp    lat   long     nt 
+ "slp"  "lat" "long"   "nt" </code></pre>
+</div>
+</div>
+<section id="create-a-plotting-function" class="level3">
+<h3 class="anchored" data-anchor-id="create-a-plotting-function">Create a plotting function</h3>
+<p>Since I’m going to make a bunch of plots that will all have the same basic form, I will make a plotting function. I am going to make a function where only the x and y variables can vary (so are arguments to the function). Since I’m making a function to plot variables from a single data set I’m going to hard-code the data set into the function. If you have multiple data sets or you are making a function for use across projects you’ll probably want to add the data set as a function argument. My functions inputs are based on the variable names, so I need to pass strings into the ggplot2 functions. Strings cannot be used directly in <code>aes()</code>, but can be used with the .data pronoun. I’m making pretty basic graphs since these are exploratory plots, not publication-ready plots. I will make a <code>scatter plot</code> and add locally weighted regression <code>(loess)</code> lines via <code>geom_smooth()</code>. I use such lines with great caution, as it can be easy to get too attached any pattern the <code>loess</code> line shows.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">scatter_fun <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(x, y) {</span>
+<span id="cb9-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data=</span>dat, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> .data[[x]], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> .data[[y]])) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_point</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-4">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_smooth</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">method =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"loess"</span>,</span>
+<span id="cb9-5">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">se =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span id="cb9-6">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey74"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(</span>
+<span id="cb9-7">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.major =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb9-8">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.minor =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb9-9">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.background =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb9-10">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.line =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_line</span>()</span>
+<span id="cb9-11">                )</span>
+<span id="cb9-12">}</span></code></pre></div>
+</div>
+</section>
+<section id="heres-an-example-of-the-function-output-passing-in-x-and-y-as-strings." class="level3">
+<h3 class="anchored" data-anchor-id="heres-an-example-of-the-function-output-passing-in-x-and-y-as-strings.">Here’s an example of the function output, passing in x and y as strings.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scatter_fun</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lat"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"elev"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="looping-through-one-vector-of-variables" class="level3">
+<h3 class="anchored" data-anchor-id="looping-through-one-vector-of-variables">Looping through one vector of variables</h3>
+<p>One way to make all the plots I want is to loop through each explanatory variable for a fixed response variable. With this approach I would need a separate loop for each response variable.</p>
+</section>
+<section id="here-i-will-use-the-map-function-from-purrr-package-for-looping." class="level3">
+<h3 class="anchored" data-anchor-id="here-i-will-use-the-map-function-from-purrr-package-for-looping.">Here I will use the map function from purrr package for looping.</h3>
+<p>I pass each explanatory variable to the first argument in scatter_fun() and I fix the second argument to “elev”. I use the formula coding in map() and so refer to the element of the explanatory vector via .x within scatter_fun().</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">elev_plots <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.x =</span> expl, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.f =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scatter_fun</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> .x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"elev"</span>) )</span></code></pre></div>
+</div>
+<p>The output is a list of 4 plots (since there are 4 explanatory variables). You’ll notice that each element of the list has the variable name associated with it. This is why I used set_names() earlier, since this is convenient for printing the plots and, you’ll see later, is convenient when saving the plots in files with understandable names.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">elev_plots</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$slp</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$lat</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$long</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$nt</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="looping-through-both-vectors" class="level3">
+<h3 class="anchored" data-anchor-id="looping-through-both-vectors">Looping through both vectors</h3>
+<p>For only a few response variables we could easily copy and paste the code above, changing the hard-coded response variable each time. This process can get burdensome if there are a lot of response variables, though. Using a <code>nested loop</code> is another option which involve looping through both vectors of variables to make all the plots at once. Because we want a plot for each combination of variables, this is a job for a nested loop. This means <code>one map() loop</code> will be <code>nested inside another</code>. <code>I will refer to the first map() loop as the outer loop</code> and <code>the second one as the inner loop</code>. I’m going to run through the response variables in the outer loop and the explanatory variables in the inner loop. That way I can graph all of the explanatory variables for each response variable before moving on to the next response variable. <code>This puts the output, a nested list</code>, in a logical order. <code>A nested loop involves more complicated code</code>. It took some effort for me to wrap my head around how to refer to the list element from the outer loop within the inner loop when using the map() formula coding with the tilde <code>(~)</code>. I found the answers/comments to this question on Stack Overflow to be helpful. Since my scatter plot function is so simple I ended up using formula coding for the outer loop and the function as in the inner loop. The inner list elements are fed to the first argument of scatter_fun() by default, which works out great since the first argument is the x variable and the inner loop loops through the explanatory variables. The .x then refers to the outer list elements (the response variable names), and is passed to the y argument of the function in the inner loop.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">all_plots <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.x =</span> response,</span>
+<span id="cb17-2">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.f=</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.x =</span> expl, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.f =</span> scatter_fun, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> .x))</span></code></pre></div>
+</div>
+<p>To be honest, I think it is fairly hard to follow what the above code is doing. And I’ve found it difficult to use such an approach if adding additional nested loops. At the end of the day, using anonymous functions involves more code but the results may be easier to understand. Well, as easy to follow as nested loops ever are. Here’s the same plots using anonymous functions in each map() loop.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1">all_plots2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(response, <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(resp) {</span>
+<span id="cb18-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(expl, <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span>(expl) {</span>
+<span id="cb18-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scatter_fun</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> expl, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> resp)</span>
+<span id="cb18-4">  })</span>
+<span id="cb18-5">})</span></code></pre></div>
+</div>
+<p>The output is a list of lists. Each sub-list contains all the plots for a single response variable. Because I set the names for both vectors of variable names, the inner and outer lists both have names. These names can be used to pull out individual plots. For example, if I want to see all the plots for the grad response variable I can print that sub-list by name. (I’m going to display only two of four grad plots here to save space.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1">all_plots<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>grad[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$slp</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$lat</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>If I want to print a single plot, I can first extract one of the sub-lists using an outer list name and then extract the individual plot via an inner list name.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1">all_plots<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>grad<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>long</span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>I find the names convenient, but you can also extract plots via position. Here’s the same graph, the third element of the third list.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1">all_plots[[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]][[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]]</span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="combining-variables-for-a-single-loop" class="level3">
+<h3 class="anchored" data-anchor-id="combining-variables-for-a-single-loop">Combining variables for a single loop</h3>
+<p>Since nested loops can be complicated, another option is to create all combinations of the two input vectors and then loop through the vectors in a single loop. This can be done, for example, using <code>tidyr::expand_grid()</code>. The main thing I like about <code>tidyr::expand_grid()</code> over <code>expand.grid()</code> from base R is the order of the output. Both put the results into a data set (data.frame or tibble). Here’s how that would look, putting the response variables first to match the output order above. I’m using <code>tidyr version 1.1.4</code> here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1">resp_expl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span>  tidyr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand_grid</span>(expl,response)</span>
+<span id="cb24-2">resp_expl</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 2
+   expl  response
+   &lt;chr&gt; &lt;chr&gt;   
+ 1 slp   elev    
+ 2 slp   resp    
+ 3 slp   grad    
+ 4 lat   elev    
+ 5 lat   resp    
+ 6 lat   grad    
+ 7 long  elev    
+ 8 long  resp    
+ 9 long  grad    
+10 nt    elev    
+11 nt    resp    
+12 nt    grad    </code></pre>
+</div>
+</div>
+<p>I can now use <code>pmap()</code> from purrr to loop through the rows of this tibble. I have to be careful with my argument order, though, since I have the y variable first in the tibble but it is the second argument in my function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1">allplots2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pmap</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.l =</span> resp_expl, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.f =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scatter_fun</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> .x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> .y) )</span></code></pre></div>
+</div>
+<p>I’m not going to print them here, but one minor downside of this approach is that only the first variable name is carried along to the output list. If I wanted to save these plots separately and use both the response and explanatory variable in the file name I’d need to create the file names based on <code>resp_expl</code>. I won’t show this in the next section on saving plots, so here is a quick example of creating basic file names based on both variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1">allplots2_names <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pmap</span>(resp_expl, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(.x, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"_"</span>, .y, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".png"</span>))</span>
+<span id="cb27-2">allplots2_names[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$slp
+[1] "slp_elev.png"
+
+$slp
+[1] "slp_resp.png"</code></pre>
+</div>
+</div>
+</section>
+<section id="saving-the-plots" class="level3">
+<h3 class="anchored" data-anchor-id="saving-the-plots">Saving the plots</h3>
+<p>Once all the graphs are made we can look at them in R by printing the list or parts of the list as above. But if you want to peruse them at your leisure later or send them to a collaborator you’ll want to save them outside of R.</p>
+<p>This next section is dedicated to exploring some of the ways you can do this.</p>
+</section>
+<section id="saving-all-plots-to-one-pdf" class="level3">
+<h3 class="anchored" data-anchor-id="saving-all-plots-to-one-pdf">Saving all plots to one PDF</h3>
+<p>If you want to save every plot as a separate page in a PDF, you can do so with the pdf() function. The code below shows an example of how this works. First, a graphics device to save the plots into is created and given a name via pdf(). Then all the plots are put into that device. Finally, the device is turned off with dev.off(). The last step is important, as you can’t open the file until the device is turned off.</p>
+<p>This is a pretty coarse way to save everything, but it allows you to easily page through all the plots. I’ve used this method when I had many exploratory plots for a single response variable that I wanted to share with collaborators.</p>
+</section>
+<section id="in-this-example-code-i-save-the-file-which-i-name-all_scatterplots.pdf-into-my-current-working-directory." class="level3">
+<h3 class="anchored" data-anchor-id="in-this-example-code-i-save-the-file-which-i-name-all_scatterplots.pdf-into-my-current-working-directory.">In this example code I save the file, which I name all_scatterplots.pdf, into my current working directory.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pdf</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"all_scatterplots.pdf"</span>)</span>
+<span id="cb29-2">all_plots</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$elev
+$elev$slp</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$elev$lat</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$elev$long</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$elev$nt</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+$resp
+$resp$slp</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$resp$lat</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$resp$long</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$resp$nt</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+$grad
+$grad$slp</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$grad$lat</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$grad$long</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$grad$nt</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dev.off</span>()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>png 
+  2 </code></pre>
+</div>
+</div>
+</section>
+<section id="saving-groups-of-plots-together" class="level3">
+<h3 class="anchored" data-anchor-id="saving-groups-of-plots-together">Saving groups of plots together</h3>
+<p>Another option is to save each group of plots in a separate document. This might make sense in a case like this where there are a set of plots for each response variable and we might want a separate file for each set. To save each sub-list separately we’ll need to loop through all_plots and save the plots for each response variable into a separate file. The list names can be used in the file names to keep the output organized. The functions in purrr that start with i are special functions that loop through a list and the names of that list simultaneously. This is useful here where we want to use the list names to identify the output files while we save them. The <code>walk()</code> function is part of the map family, to be used when you want a function for its side effect instead of for a return value. Saving plots is a classic example of when we want <code>walk()</code> instead of <code>map()</code>. Combining the i and the walk gives us the <code>iwalk()</code> function. In the formula interface, .x refers to the list elements and .y refers to the names of the list. You can see I create the plot file names using the list name combined with “scatter plots.pdf”, using _ as the separator. The code below makes three files, one for each response variable, with four plots each. The files are named “elev_scatter plots.pdf”, “resp_scatter plots.pdf”, and “grad_scatter plots.pdf”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">iwalk</span>(all_plots, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> {</span>
+<span id="cb44-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pdf</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(.y, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"_scatterplots.pdf"</span>))</span>
+<span id="cb44-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(.x)</span>
+<span id="cb44-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dev.off</span>()</span>
+<span id="cb44-5">})</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$slp</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$lat</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$long</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$nt</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$slp</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$lat</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$long</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$nt</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$slp</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$lat</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$long</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$nt</code></pre>
+</div>
+</div>
+</section>
+<section id="saving-all-plots-separately" class="level3">
+<h3 class="anchored" data-anchor-id="saving-all-plots-separately">Saving all plots separately</h3>
+<p>All plots can be saved separately instead of combined in a single document. This might be necessary if you want to insert the plots into some larger document later. We’ll want to use the names of both the outer and inner lists to appropriately identify each plot we save. I decided to do this by looping through the all_plots list and the names of the list via <code>imap()</code> to make the file names in a separate step. This time I’m going to save these as PNG files so use .png at the end of the file name. The result is a list of lists, so I flatten this into a single list via flatten(). If I were to use flatten() earlier in the process I’d lose the names of the outer list. This process of combining names prior to flattening should be simplified once the proposed flatten_names() function is added to purrr.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1">plotnames <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">imap</span>(all_plots, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(.y, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"_"</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">names</span>(.x), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".png"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb57-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">flatten</span>()</span></code></pre></div>
+</div>
+<p>Once the file names are created I can loop through all the file names and plots simultaneously with walk2() and save things via ggsave(). The height and width of each output file can be set as needed in ggsave(). You can see I flattened the nested list of plots into a single list to use in walk2().</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">walk2</span>(plotnames,</span>
+<span id="cb58-2">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">flatten</span>(all_plots),</span>
+<span id="cb58-3">      <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggsave</span>(</span>
+<span id="cb58-4">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">filename =</span> .x,</span>
+<span id="cb58-5">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot =</span> .y,</span>
+<span id="cb58-6">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>,</span>
+<span id="cb58-7">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span></span>
+<span id="cb58-8">      ))</span></code></pre></div>
+</div>
+</section>
+<section id="combining-plots" class="level3">
+<h3 class="anchored" data-anchor-id="combining-plots">Combining plots</h3>
+<p>Another way to get a set of plots together is to combine them into one plot. How useful this is will depend on how many plots you have per set. This option is a lot like faceting, except we didn’t reshape our data set to allow the use faceting. I like the package cowplot function plot_grid() for quickly combining multiple plots into one. A list of plots can be passed via the plotlist argument.</p>
+</section>
+<section id="heres-what-that-looks-like-for-the-first-response-variable-elev." class="level3">
+<h3 class="anchored" data-anchor-id="heres-what-that-looks-like-for-the-first-response-variable-elev.">Here’s what that looks like for the first response variable, elev.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1">cowplot<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plotlist =</span> all_plots[[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]])</span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can use a loop to combine the plots for each response variable sub-list. The result could then be saved using any of the approaches shown above. If you have many subplots per combined plot you likely will want to save the plots at a larger size so the individual plots can be clearly seen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1">response_plots <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(all_plots, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> cowplot<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot_grid</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plotlist =</span> .x))</span>
+<span id="cb60-2">response_plots</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$elev</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$resp</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+$grad</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>To learn more on functional programming in R you can look at Jenny Bryan blog post on functional programming <a href="https://jennybc.github.io/purrr-tutorial/"><strong>here</strong></a></p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>123</category>
+  <category>Second Tag</category>
+  <guid>https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions.html</guid>
+  <pubDate>Tue, 06 Jun 2023 23:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
