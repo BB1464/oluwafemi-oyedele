@@ -12,13 +12,12 @@ author: 'Oluwafemi Oyedele'
 
 
 #comments: 
- # utterances: 
-  #  repo: Oluwafemi/blogComments 
+# utterances: 
+#  repo: Oluwafemi/blogComments 
 
 # Include something after every blog post with hand-made html-file
 #format:
-  #html:
-    #include-after-body: ../body_footer.html
-    
-    
-    
+#html:
+#include-after-body: ../body_footer.html
+
+

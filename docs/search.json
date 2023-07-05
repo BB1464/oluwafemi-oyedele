@@ -126,17 +126,31 @@
     "text": "Machine-Assisted Bayesian Workflow\nBuilding Bayesian models in a principled way remains a highly complex task requiring a lot of expertise and cognitive resources. Ideally, subject matter experts do not have to solve everything by themselves but have statisticians or data scientists by their side to assist them. Of course, the latter are not always available for every data-analysis project. As a remedy we are developing a machine-assisted workflow for building interpretable, robust, and well-predicting Bayesian models. This first requires more research on the theoretical foundations of Bayesian model building. With this in hand, machines will be trained to provide automatic model evaluation and modeling recommendations that guide the user through the model building process. While leaving the modeling choices up to the user, the machine subsequently learns from the user’s decisions to improve its recommendations on the fly.\nCurrent projects:\n\nBayesian Distributional Latent Variable Models\nMachine Learning for Bayesian Model Building"
   },
   {
-    "objectID": "talks/index.html",
-    "href": "talks/index.html",
-    "title": "Expressing yourself in R",
+    "objectID": "talk.html",
+    "href": "talk.html",
+    "title": "All Talks",
+    "section": "",
+    "text": "All Talks\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nExpressing Yourself in R\n\n\n\n\n\n\n\n123\n\n\nSecond Tag\n\n\n\n\nThis workshow will get the user familiarize with how to express themself in R using the Tidyverse\n\n\n\n\n\n\nAug 7, 2023\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "talks/universityofIbadanTraining/universityofIbadan.html",
+    "href": "talks/universityofIbadanTraining/universityofIbadan.html",
+    "title": "Expressing Yourself in R",
     "section": "",
     "text": "I will be speaking to post graduate students at the University of Ibadan in August, 2023, on how to implement various statistical concept in R. Such as:\n\nDesign of Experiment\nAnalysis of Variance\nCorrelation\nPrincipal Component Analysis\nCluster Analysis\nData Wrangling\nData Visualization\nReport Writing"
   },
   {
-    "objectID": "training/index.html",
-    "href": "training/index.html",
-    "title": "Data Management and Visualization",
+    "objectID": "training/universityofIbadan/UITraining.html",
+    "href": "training/universityofIbadan/UITraining.html",
+    "title": "Expressing Yourself in R",
     "section": "",
-    "text": "I used to consult for some students on data management and visualization in R."
+    "text": "I will be speaking to post graduate students at the University of Ibadan in August, 2023, on how to implement various statistical concept in R. Such as:\n\nDesign of Experiment\nAnalysis of Variance\nCorrelation\nPrincipal Component Analysis\nCluster Analysis\nData Wrangling\nData Visualization\nReport Writing"
+  },
+  {
+    "objectID": "training.html",
+    "href": "training.html",
+    "title": "All Training",
+    "section": "",
+    "text": "All Training\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nExpressing Yourself in R\n\n\n\n\n\n\n\n123\n\n\nSecond Tag\n\n\n\n\nThis workshow will get the user familiarize with how to express themself in R using the Tidyverse\n\n\n\n\n\n\nAug 7, 2023\n\n\n1 min\n\n\n\n\n\n\nNo matching items"
   }
 ]

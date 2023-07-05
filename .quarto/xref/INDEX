@@ -31,5 +31,17 @@
   },
   "blog.qmd": {
     "blog.html": "dca917e4"
+  },
+  "talk.qmd": {
+    "talk.html": "7a899817"
+  },
+  "talks/universityofIbadanTraining/universityofIbadan.qmd": {
+    "universityofIbadan.html": "3ccbcbbf"
+  },
+  "training/universityofIbadan/UITraining.qmd": {
+    "UITraining.html": "7a749d7e"
+  },
+  "training.qmd": {
+    "training.html": "ee547c9e"
   }
 }

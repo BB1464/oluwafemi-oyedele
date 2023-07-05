@@ -1,7 +1,13 @@
 ---
-title: Expressing yourself in R
-excerpt: "Expressing yourself in R"
-toc-location: right
+title: 'Expressing Yourself in R'
+date: '2023-08-07'
+categories: ['123', 'Second Tag']
+description: 'This workshow will get the user familiarize with how to express themself in R using the Tidyverse'
+execute: 
+  message: false
+  warning: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 I will be speaking to post graduate students at the University of Ibadan in August, 2023, on how to implement various statistical concept in R. Such as:
@@ -14,5 +20,3 @@ I will be speaking to post graduate students at the University of Ibadan in Augu
 * Data Wrangling
 * Data Visualization
 * Report Writing
-
-

@@ -25,9 +25,9 @@ website:
       - text: Blogs
         href: blog.qmd
       - text: Talks
-        href: talks/index.qmd
+        href: talk.qmd
       - text: Training
-        href: training/index.qmd
+        href: training.qmd
       - text: CV
         href: cv/index.qmd
 #    right:
