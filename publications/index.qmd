@@ -1,0 +1,24 @@
+---
+title: Scientific Publications
+excerpt: "A list of my scientific publications"
+toc-location: right
+---
+
+## In Review
+
+* **Oyedele, O.**, Deo-Gratias, H., Hauser, S., Schut, A. G. T., Woittiez, L. S., Rusinamhodzi, L., Ogunlade, M. O., Giller, K. E. [Macrofauna accelerates nutrient cycling through litterfall in cocoa.] (**In-Press**).
+
+
+## 2022
+
+* Williams, M.C., Ezeoke, Q. A., Diekade, V. A., **Oyedele, O.**, Mbonu, P., Tolulope, E. [Assessment of poultry manure and NPK fertilizer on the yield components of cucumber variety in Owerri.] *International Journal of Horticulture and Forestry Research* 3(1): 1-11
+
+## 2021
+
+* Akpa, E. A., Akpama, A. I. and **Oyedele, O.** [Evaluation of Saturated Hydraulic Characteristics and its Influence on some Physical and Chemical Properties of Soils Developed on Coastal Plain Sands of Obufa Esuk Orok in Calabar, Cross River State, Nigeria.] *Asian Research Journal of Agriculture.* 13(4): 35-45
+
+* Akpa, E. A., Akpama, A. I. and **Oyedele, O.** [Evaluation of Saturated Hydraulic Characteristics and its Influence on some Physical and Chemical Properties of Soils Developed on Coastal Plain Sands of Obufa Esuk Orok in Calabar, Cross River State, Nigeria.] *Asian Research Journal of Agriculture.* 13(4): 35-45
+[ArXiv](https://doi.org/10.9734/ajaar/2019/v10i430036).
+
+## 2019
+* **Oyedele, O.**, Akpa, E. A. and Akpan, J. F. [Infiltration Characteristics of 	Soils Developed on Coastal Plain Sands in Calabar Municipality Local 	Government Area, Southern Cross River State.] *Asian Journal of Advances 	in Agricultural Research.* 10(4): 1-8   
