@@ -1,0 +1,7 @@
+---
+title: Data Management and Visualization
+excerpt: "Data Management and Visualization"
+toc-location: right
+---
+
+I used to consult for some students on data management and visualization in R.

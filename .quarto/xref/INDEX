@@ -10,5 +10,20 @@
   },
   "publications/index.qmd": {
     "index.html": "fd096d14"
+  },
+  "cv/index.qmd": {
+    "index.html": "1272f4f3"
+  },
+  "research/index.qmd": {
+    "index.html": "2af94b68"
+  },
+  "blogs/index.qmd": {
+    "index.html": "4634ca36"
+  },
+  "talks/index.qmd": {
+    "index.html": "e1101d52"
+  },
+  "training/index.qmd": {
+    "index.html": "443fe611"
   }
 }
