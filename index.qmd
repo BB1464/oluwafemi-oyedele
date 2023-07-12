@@ -18,6 +18,9 @@ about:
       href: "mailto:oluwafemioyedele908@gmail.com"
     - icon: google
       href: https://scholar.google.com/citations?user=V40KA_IAAAAJ&hl=en  
+    - icon: stack-overflow
+      text: StackOverflow
+      href: https://stackoverflow.com/users/13395844/oluwafemi-oyedele
 ---
 
 ::: {#about-block}
