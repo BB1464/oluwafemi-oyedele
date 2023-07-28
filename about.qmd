@@ -9,7 +9,7 @@ About this site
 ```
 
 <script src="https://utteranc.es/client.js"
-        repo="[BB1464/BB1464]"
+        repo="[BB1464/oluwafemi-oyedele]"
         issue-term="https://github.com/BB1464"
         theme="github-light"
         crossorigin="anonymous"

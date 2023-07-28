@@ -1,7 +1,7 @@
 {
-  "hash": "f0339d65c83519b189e987081931ddd6",
+  "hash": "39e3066830584667d845773eea34b057",
   "result": {
-    "markdown": "---\ntitle: \"About\"\n---\n\n\nAbout this site\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n\n\n<script src=\"https://utteranc.es/client.js\"\n        repo=\"[BB1464/BB1464]\"\n        issue-term=\"https://github.com/BB1464\"\n        theme=\"github-light\"\n        crossorigin=\"anonymous\"\n        async>\n</script>    \n    \n    \n    \n",
+    "markdown": "---\ntitle: \"About\"\n---\n\n\nAbout this site\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n\n\n<script src=\"https://utteranc.es/client.js\"\n        repo=\"[BB1464/oluwafemi-oyedele]\"\n        issue-term=\"https://github.com/BB1464\"\n        theme=\"github-light\"\n        crossorigin=\"anonymous\"\n        async>\n</script>    \n    \n    \n    \n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
