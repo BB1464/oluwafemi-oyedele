@@ -37,10 +37,3 @@ I also have a keen interest in Bayesian statistics, a powerful statistical appro
 <!-- </div> -->
 <!-- ``` -->
 
-<script src="https://utteranc.es/client.js"
-        repo="[BB1464/BB1464]"
-        issue-term="https://github.com/BB1464"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
