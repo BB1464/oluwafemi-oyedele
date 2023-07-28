@@ -8,6 +8,11 @@ execute:
   warning: false
 editor_options: 
   chunk_output_type: console
+format:
+  html:
+    comments:
+      utterances:
+         repo: BB1464/oluwafemi-oyedele
 ---
 # Introduction
 
