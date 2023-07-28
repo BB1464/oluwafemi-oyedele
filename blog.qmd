@@ -13,6 +13,18 @@ page-layout: full
 title-block-banner: false
 ---
 
+
+<script src="https://utteranc.es/client.js"
+        repo="[BB1464/oluwafemi-oyedele]"
+        issue-term="https://github.com/BB1464"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>    
+    
+    
+    
+
 <!-- :::: {.columns} -->
 
 <!-- ::: {.column width="40%"} -->
