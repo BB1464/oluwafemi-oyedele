@@ -567,146 +567,34 @@ $slp
 background-color: null;
 font-style: inherit;">pdf</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"all_scatterplots.pdf"</span>)</span>
-<span id="cb29-2">all_plots</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$elev
-$elev$slp</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$elev$lat</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$elev$long</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$elev$nt</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-$resp
-$resp$slp</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$resp$lat</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$resp$long</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$resp$nt</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-$grad
-$grad$slp</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$grad$lat</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$grad$long</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$grad$nt</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">dev.off</span>()</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>png 
-  2 </code></pre>
-</div>
+font-style: inherit;">"all_scatterplots.pdf"</span>)</span></code></pre></div>
 </div>
 </section>
 <section id="saving-groups-of-plots-together" class="level3">
 <h3 class="anchored" data-anchor-id="saving-groups-of-plots-together">Saving groups of plots together</h3>
 <p>Another option is to save each group of plots in a separate document. This might make sense in a case like this where there are a set of plots for each response variable and we might want a separate file for each set. To save each sub-list separately we’ll need to loop through all_plots and save the plots for each response variable into a separate file. The list names can be used in the file names to keep the output organized. The functions in purrr that start with i are special functions that loop through a list and the names of that list simultaneously. This is useful here where we want to use the list names to identify the output files while we save them. The <code>walk()</code> function is part of the map family, to be used when you want a function for its side effect instead of for a return value. Saving plots is a classic example of when we want <code>walk()</code> instead of <code>map()</code>. Combining the i and the walk gives us the <code>iwalk()</code> function. In the formula interface, .x refers to the list elements and .y refers to the names of the list. You can see I create the plot file names using the list name combined with “scatter plots.pdf”, using _ as the separator. The code below makes three files, one for each response variable, with four plots each. The files are named “elev_scatter plots.pdf”, “resp_scatter plots.pdf”, and “grad_scatter plots.pdf”.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><span class="fu" style="color: #4758AB;
+<div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">iwalk</span>(all_plots, <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">~</span> {</span>
-<span id="cb44-2">  <span class="fu" style="color: #4758AB;
+<span id="cb30-2">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pdf</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">paste0</span>(.y, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"_scatterplots.pdf"</span>))</span>
-<span id="cb44-3">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">print</span>(.x)</span>
-<span id="cb44-4">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">dev.off</span>()</span>
-<span id="cb44-5">})</span></code></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$slp</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$lat</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$long</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$nt</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$slp</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$lat</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$long</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$nt</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$slp</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$lat</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$long</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-$nt</code></pre>
-</div>
+<span id="cb30-3">  </span>
+<span id="cb30-4">})</span></code></pre></div>
 </div>
 </section>
 <section id="saving-all-plots-separately" class="level3">
 <h3 class="anchored" data-anchor-id="saving-all-plots-separately">Saving all plots separately</h3>
 <p>All plots can be saved separately instead of combined in a single document. This might be necessary if you want to insert the plots into some larger document later. We’ll want to use the names of both the outer and inner lists to appropriately identify each plot we save. I decided to do this by looping through the all_plots list and the names of the list via <code>imap()</code> to make the file names in a separate step. This time I’m going to save these as PNG files so use .png at the end of the file name. The result is a list of lists, so I flatten this into a single list via flatten(). If I were to use flatten() earlier in the process I’d lose the names of the outer list. This process of combining names prior to flattening should be simplified once the proposed flatten_names() function is added to purrr.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1">plotnames <span class="ot" style="color: #003B4F;
+<div class="sourceCode cell-code" id="cb31" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1">plotnames <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -723,40 +611,40 @@ background-color: null;
 font-style: inherit;">".png"</span>)) <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%&gt;%</span></span>
-<span id="cb57-2">  <span class="fu" style="color: #4758AB;
+<span id="cb31-2">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">flatten</span>()</span></code></pre></div>
 </div>
 <p>Once the file names are created I can loop through all the file names and plots simultaneously with walk2() and save things via ggsave(). The height and width of each output file can be set as needed in ggsave(). You can see I flattened the nested list of plots into a single list to use in walk2().</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><span class="fu" style="color: #4758AB;
+<div class="sourceCode cell-code" id="cb32" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">walk2</span>(plotnames,</span>
-<span id="cb58-2">      <span class="fu" style="color: #4758AB;
+<span id="cb32-2">      <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">flatten</span>(all_plots),</span>
-<span id="cb58-3">      <span class="sc" style="color: #5E5E5E;
+<span id="cb32-3">      <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">~</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ggsave</span>(</span>
-<span id="cb58-4">        <span class="at" style="color: #657422;
+<span id="cb32-4">        <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">filename =</span> .x,</span>
-<span id="cb58-5">        <span class="at" style="color: #657422;
+<span id="cb32-5">        <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">plot =</span> .y,</span>
-<span id="cb58-6">        <span class="at" style="color: #657422;
+<span id="cb32-6">        <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">height =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">7</span>,</span>
-<span id="cb58-7">        <span class="at" style="color: #657422;
+<span id="cb32-7">        <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">width =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">7</span></span>
-<span id="cb58-8">      ))</span></code></pre></div>
+<span id="cb32-8">      ))</span></code></pre></div>
 </div>
 </section>
 <section id="combining-plots" class="level3">
@@ -766,7 +654,7 @@ font-style: inherit;">7</span></span>
 <section id="heres-what-that-looks-like-for-the-first-response-variable-elev." class="level3">
 <h3 class="anchored" data-anchor-id="heres-what-that-looks-like-for-the-first-response-variable-elev.">Here’s what that looks like for the first response variable, elev.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1">cowplot<span class="sc" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1">cowplot<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -781,7 +669,7 @@ font-style: inherit;">1</span>]])</span></code></pre></div>
 </div>
 <p>We can use a loop to combine the plots for each response variable sub-list. The result could then be saved using any of the approaches shown above. If you have many subplots per combined plot you likely will want to save the plots at a larger size so the individual plots can be clearly seen.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1">response_plots <span class="ot" style="color: #003B4F;
+<div class="sourceCode cell-code" id="cb34" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1">response_plots <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -794,7 +682,7 @@ background-color: null;
 font-style: inherit;">plot_grid</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">plotlist =</span> .x))</span>
-<span id="cb60-2">response_plots</span></code></pre></div>
+<span id="cb34-2">response_plots</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$elev</code></pre>
 </div>

@@ -3,7 +3,7 @@ title: 'Functional Programming with Purrr'
 date: '2023-06-07'
 categories: ['123', 'Second Tag']
 description: 'This post will introduce you to how to use purrr pacakge to automate task in R'
-execute: 
+execute:
   message: false
   warning: false
 editor_options: 
@@ -28,6 +28,10 @@ This post is based on an example that involves plotting bivariate relationships 
 ## Load R packages
 ### Load the necessary library
 ```{r setup, include=TRUE}
+#| warning: false
+#| message: false
+
+
 library(ggplot2)
 library(purrr)
 library(cowplot)
@@ -114,6 +118,9 @@ One way to make all the plots I want is to loop through each explanatory variabl
 I pass each explanatory variable to the first argument in scatter_fun() and I fix the second argument to "elev". I use the formula coding in map() and so refer to the element of the explanatory vector via .x within scatter_fun().
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 elev_plots = map(.x = expl, .f = ~scatter_fun(x = .x, y = "elev") )
 ```
 
@@ -121,6 +128,9 @@ elev_plots = map(.x = expl, .f = ~scatter_fun(x = .x, y = "elev") )
 The output is a list of 4 plots (since there are 4 explanatory variables). You'll notice that each element of the list has the variable name associated with it. This is why I used set_names() earlier, since this is convenient for printing the plots and, you'll see later, is convenient when saving the plots in files with understandable names.
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 elev_plots
 ```
 
@@ -129,6 +139,9 @@ elev_plots
 For only a few response variables we could easily copy and paste the code above, changing the hard-coded response variable each time. This process can get burdensome if there are a lot of response variables, though. Using a `nested loop` is another option which involve looping through both vectors of variables to make all the plots at once. Because we want a plot for each combination of variables, this is a job for a nested loop. This means `one map() loop` will be `nested inside another`. `I will refer to the first map() loop as the outer loop` and `the second one as the inner loop`. I'm going to run through the response variables in the outer loop and the explanatory variables in the inner loop. That way I can graph all of the explanatory variables for each response variable before moving on to the next response variable. `This puts the output, a nested list`, in a logical order. `A nested loop involves more complicated code`. It took some effort for me to wrap my head around how to refer to the list element from the outer loop within the inner loop when using the map() formula coding with the tilde `(~)`. I found the answers/comments to this question on Stack Overflow to be helpful. Since my scatter plot function is so simple I ended up using formula coding for the outer loop and the function as in the inner loop. The inner list elements are fed to the first argument of scatter_fun() by default, which works out great since the first argument is the x variable and the inner loop loops through the explanatory variables. The .x then refers to the outer list elements (the response variable names), and is passed to the y argument of the function in the inner loop.
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 all_plots = map(.x = response,
                   .f=~ map(.x = expl, .f = scatter_fun, y = .x))
 ```
@@ -137,6 +150,9 @@ To be honest, I think it is fairly hard to follow what the above code is doing. 
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 all_plots2 = map(response, function(resp) {
   map(expl, function(expl) {
     scatter_fun(x = expl, y = resp)
@@ -148,18 +164,27 @@ all_plots2 = map(response, function(resp) {
 The output is a list of lists. Each sub-list contains all the plots for a single response variable. Because I set the names for both vectors of variable names, the inner and outer lists both have names. These names can be used to pull out individual plots. For example, if I want to see all the plots for the grad response variable I can print that sub-list by name. (I'm going to display only two of four grad plots here to save space.)
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 all_plots$grad[1:2]
 ```
 
 If I want to print a single plot, I can first extract one of the sub-lists using an outer list name and then extract the individual plot via an inner list name.
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 all_plots$grad$long
 ```
 
 I find the names convenient, but you can also extract plots via position. Here's the same graph, the third element of the third list.
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 all_plots[[3]][[3]]
 ```
 
@@ -169,6 +194,9 @@ Since nested loops can be complicated, another option is to create all combinati
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 resp_expl <-  tidyr::expand_grid(expl,response)
 resp_expl
 ```
@@ -178,6 +206,9 @@ I can now use `pmap()` from purrr to loop through the rows of this tibble. I hav
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 allplots2 = pmap(.l = resp_expl, .f = ~scatter_fun(x = .x, y = .y) )
 ```
 
@@ -186,6 +217,9 @@ I'm not going to print them here, but one minor downside of this approach is tha
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 allplots2_names = pmap(resp_expl, ~ paste0(.x, "_", .y, ".png"))
 allplots2_names[1:2]
 ```
@@ -207,9 +241,11 @@ This is a pretty coarse way to save everything, but it allows you to easily page
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 pdf("all_scatterplots.pdf")
-all_plots
-dev.off()
+
 ```
 
 ### Saving groups of plots together
@@ -218,10 +254,12 @@ Another option is to save each group of plots in a separate document. This might
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 iwalk(all_plots, ~ {
   pdf(paste0(.y, "_scatterplots.pdf"))
-  print(.x)
-  dev.off()
+  
 })
 ```
 
@@ -232,6 +270,9 @@ All plots can be saved separately instead of combined in a single document. This
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 plotnames = imap(all_plots, ~ paste0(.y, "_", names(.x), ".png")) %>%
   flatten()
 ```
@@ -240,6 +281,9 @@ Once the file names are created I can loop through all the file names and plots 
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 walk2(plotnames,
       flatten(all_plots),
       ~ ggsave(
@@ -257,6 +301,9 @@ Another way to get a set of plots together is to combine them into one plot. How
 ### Here's what that looks like for the first response variable, elev.
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 cowplot::plot_grid(plotlist = all_plots[[1]])
 ```
 
@@ -264,6 +311,9 @@ We can use a loop to combine the plots for each response variable sub-list. The 
 
 
 ```{r,include=TRUE}
+#| warning: false
+#| message: false
+
 response_plots = map(all_plots, ~ cowplot::plot_grid(plotlist = .x))
 response_plots
 ```
