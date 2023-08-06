@@ -1,5 +1,5 @@
 ---
-title: 'Expressing Yourself in R'
+title: 'Training on Statistics and Data analysis using R'
 date: '2023-08-07'
 categories: ['123', 'Second Tag']
 description: 'This workshow will get the user familiarize with how to express themself in R using the Tidyverse'
