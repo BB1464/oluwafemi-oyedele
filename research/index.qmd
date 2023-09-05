@@ -5,10 +5,15 @@ toc-location: right
 page-layout: full
 ---
 
-- Agronomy
+- Cropping Systems
 
-- Process-based model
+- Soil Fertility and Plant Nutrition
 
-- Bayesian Statistics
+- Crop modeling.
+
+- Crop management.
+
+- Bayesian Statistics.
+
 
 
