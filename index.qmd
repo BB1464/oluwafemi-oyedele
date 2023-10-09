@@ -16,6 +16,9 @@ about:
     - icon: envelope
       text: Email
       href: "mailto:oluwafemioyedele908@gmail.com"
+    - icon: mastodon
+      aria-label: Mastodon
+      href: "https://mastodon.social/@oluwafemi"
     - icon: google
       href: https://scholar.google.com/citations?user=V40KA_IAAAAJ&hl=en  
     - icon: stack-overflow
