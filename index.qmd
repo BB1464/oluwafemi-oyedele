@@ -31,7 +31,7 @@ about:
 
 
 
-# Welcome to Oluwafemi website!!!
+## ❤️ Welcome to Oluwafemi website!!!
 My name is Oluwafemi Oyedele. I am currently a Research Assistant at the International Institute of Tropical Agriculture (IITA) under the CocoaSoils Project. I hold a Master of Science degree in Agronomy (distinction) with specialization in Soil Science from the University of Ibadan, Nigeria. My research involves elucidation of soil properties, nutrient dynamics and edaphology of cocoa and cassava production in the tropics. I have a flair for processed-based modelling with special emphasis on simulating and predicting complex processes in natural systems. I’m adept at Bayesian statistics, a powerful statistical approach that uses prior knowledge and probabilities to refine inferences. Additionally, I contribute to the R4DS online learning community as a mentor, helping aspiring data scientists to learn R programming and its applications in data science. I’m passionately committed to the deployment of advanced analytical techniques for research and development, especially in contributing to the growth and development of the global critical mass of data scientists needed for a better life around the world. I am currently a prospective PhD students working on the topic entitled: “assessing the resilience of cassava to climate change using process-oriented modelling approach” for my PhD at the University of Kassel, Germany. On this website, you will find a collection of my published works, including scholarly articles, talks, and blogs. You will also find news and updates on my current research projects as well as information on upcoming events and conferences where I will be speaking. I invite you to explore my website to learn more about my work and innovations. 
 
 

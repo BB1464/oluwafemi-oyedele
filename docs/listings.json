@@ -1,5 +1,11 @@
 [
   {
+    "listing": "/training.html",
+    "items": [
+      "/training/universityofIbadan/UITraining.html"
+    ]
+  },
+  {
     "listing": "/blog.html",
     "items": [
       "/blogs/funtionalProgramming/functions.html"
@@ -9,12 +15,6 @@
     "listing": "/talk.html",
     "items": [
       "/talks/universityofIbadanTraining/universityofIbadan.html"
-    ]
-  },
-  {
-    "listing": "/training.html",
-    "items": [
-      "/training/universityofIbadan/UITraining.html"
     ]
   }
 ]
