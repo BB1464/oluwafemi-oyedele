@@ -44,7 +44,10 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">library</span>(tidymodels)</span></code></pre></div>
+font-style: inherit;">library</span>(tidymodels)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tidymodels_prefer</span>()</span></code></pre></div>
 </div>
 </section>
 <section id="preparing-the-data" class="level3">
@@ -58,7 +61,9 @@ font-style: inherit;">data</span>(mtcars)</span>
 background-color: null;
 font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">123</span>)</span>
+font-style: inherit;">123</span>) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># For reproducibility</span></span>
 <span id="cb2-3"></span>
 <span id="cb2-4">car_split <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -133,13 +138,43 @@ font-style: inherit;">%&gt;%</span></span>
 background-color: null;
 font-style: inherit;">predict</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">new_data =</span> car_test)</span></code></pre></div>
+font-style: inherit;">new_data =</span> car_test)</span>
+<span id="cb5-3"></span>
+<span id="cb5-4"></span>
+<span id="cb5-5">predictions <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> car_test <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb5-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(mpg) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb5-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bind_cols</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">predict</span>(lm_fit, car_test))</span>
+<span id="cb5-8"></span>
+<span id="cb5-9">predictions</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     mpg    .pred
+Mazda RX4 Wag       21.0 21.71246
+Valiant             18.1 20.64933
+Merc 450SE          16.4 12.94019
+Merc 450SL          17.3 14.67981
+Lincoln Continental 10.4 10.79525
+Toyota Corona       21.5 25.01139
+Camaro Z28          13.3 13.08460
+Pontiac Firebird    19.2 16.27870</code></pre>
+</div>
 </div>
 </section>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>In this post, we have introduced <strong>Tidymodels</strong>, a powerful tool for modeling in R. We have seen how to <strong>install and use Tidymodels</strong>, and how it integrates with the tidyverse ecosystem. With Tidymodels, you can streamline your modeling workflow and make it more consistent and reproducible.</p>
+<p>In this post, we have introduced <strong>Tidymodels</strong>, a powerful tool for modeling in R. We have seen how to <strong>install and use Tidymodels</strong>, and how it integrates with the tidyverse ecosystem. With Tidymodels, you can streamline your modeling workflow and make it more consistent and reproducible. In my next blog post I will explain how to tune hyper-parameters and also how to perform cross validation.</p>
 
 
 </section>

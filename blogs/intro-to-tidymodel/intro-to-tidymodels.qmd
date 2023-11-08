@@ -74,6 +74,8 @@ We'll try to predict miles per gallon (`mpg`) based on the other variables in th
 lm_spec <- linear_reg() %>%
 set_engine("lm") %>%
 set_mode("regression")
+
+lm_spec
 ```
 
 
@@ -85,6 +87,8 @@ Next, let's fit our model to the training data:
   
 lm_fit <- lm_spec %>%
 fit(mpg ~ ., data = car_train)
+
+lm_fit
 ```
 
 
@@ -93,15 +97,17 @@ We can now use this model to make predictions on the test data:
 ```{r}
 #| warning: false
 #| message: false
+#| echo: true
 
 predictions <- lm_fit %>%
 predict(new_data = car_test)
 
 
-car_test %>% 
+predictions <- car_test %>% 
   select(mpg) %>% 
   bind_cols(predict(lm_fit, car_test))
 
+predictions
 ```
 
 ## Conclusion
