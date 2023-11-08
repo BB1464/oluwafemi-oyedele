@@ -1,0 +1,111 @@
+---
+title: 'Introduction to TidyModel in R'
+date: '2023-11-08'
+categories: ['123', 'Second Tag']
+description: 'This post will introduce you to how to use tidymodel pacakge in R'
+execute:
+  message: false
+  warning: false
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    comments:
+      utterances:
+         repo: BB1464/oluwafemi-oyedele
+---
+
+## Basic Introduction to Tidymodels using R
+
+In this blog post, we will explore **Tidymodels**, a collection of packages for modeling and machine learning using R. This is part of what I learnt in the R for Data Science online Learning Community.
+
+## What is Tidymodels?
+
+Tidymodels is a suite of packages that provides a consistent and flexible approach to modeling in R. It is part of the tidyverse, an ecosystem of R packages designed for data science.
+
+## Installing Tidymodels
+
+To install Tidymodels, you can use the `install.packages()` function in R. 
+
+
+## Basic Usage of Tidymodels
+
+Let's go through a simple example of using Tidymodels for linear regression.
+
+### Loading the necessary libraries
+
+```{r}
+#| warning: false
+#| message: false
+
+
+library(tidymodels)
+tidymodels_prefer()
+```
+
+
+### Preparing the data
+
+For this example, we'll use the `mtcars` dataset that comes with R. Let's split this data into a training set and a testing set.
+
+```{r}
+#| warning: false
+#| message: false
+
+data(mtcars)
+set.seed(123)
+
+car_split <- initial_split(mtcars, prop = 0.75)
+
+car_train <- training(car_split)
+
+car_test <- testing(car_split)
+```
+
+
+### Building the model
+
+We'll try to predict miles per gallon (`mpg`) based on the other variables in the dataset. First, let's specify our model:
+
+```{r}
+#| warning: false
+#| message: false
+
+lm_spec <- linear_reg() %>%
+set_engine("lm") %>%
+set_mode("regression")
+```
+
+
+Next, let's fit our model to the training data:
+
+```{r}
+#| warning: false
+#| message: false
+  
+lm_fit <- lm_spec %>%
+fit(mpg ~ ., data = car_train)
+```
+
+
+We can now use this model to make predictions on the test data:
+
+```{r}
+#| warning: false
+#| message: false
+
+predictions <- lm_fit %>%
+predict(new_data = car_test)
+
+```
+
+```{r}
+car_test %>% 
+  select(mpg) %>% 
+  bind_cols(predict(lm_fit, car_test))
+```
+
+## Conclusion
+
+In this post, we have introduced **Tidymodels**, a powerful tool for modeling in R. We have seen how to **install and use Tidymodels**, and how it integrates with the tidyverse ecosystem. With Tidymodels, you can streamline your modeling workflow and make it more consistent and reproducible. In my next blog post I will explain how to tune hyper-parameters and also how to perform cross validation.
+

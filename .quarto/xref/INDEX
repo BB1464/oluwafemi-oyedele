@@ -43,5 +43,8 @@
   },
   "training.qmd": {
     "training.html": "ee547c9e"
+  },
+  "blogs/intro-to-tidymodel/intro-to-tidymodels.qmd": {
+    "intro-to-tidymodels.html": "fe88e502"
   }
 }

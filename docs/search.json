@@ -42,20 +42,6 @@
     "text": "Download current CV"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "All Blog Posts",
-    "section": "",
-    "text": "All Blog Posts\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nFunctional Programming with Purrr\n\n\n\n\n\n\n\n123\n\n\nSecond Tag\n\n\n\n\nThis post will introduce you to how to use purrr pacakge to automate task in R\n\n\n\n\n\n\nJun 7, 2023\n\n\n15 min\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "blogs/funtionalProgramming/functions.html",
     "href": "blogs/funtionalProgramming/functions.html",
     "title": "Functional Programming with Purrr",
@@ -68,6 +54,62 @@
     "title": "Functional Programming with Purrr",
     "section": "",
     "text": "library(ggplot2)\nlibrary(purrr)\nlibrary(cowplot)\n\nI’ll be plotting with ggplot2 and looping with purrr package. I’ll also be using package cowplot later to combine individual plots into one, but will use the package functions via my name space cowplot:: instead of loading the package.\n\n\n\nHere I’m going to make an example dataset with 3 response (y) variables and 4 explanatory (x) variables for plotting.\n\nset.seed(16)\ndat = data.frame(elev = round( runif(20, 100, 500), 1),\n                 resp = round( runif(20, 0, 10), 1),\n                 grad = round( runif(20, 0, 1), 2),\n                 slp = round( runif(20, 0, 35),1),\n                 lat = runif(20, 44.5, 45),\n                 long = runif(20, 122.5, 123.1),\n                 nt = rpois(20, lambda = 25) )\nhead(dat)\n\n   elev resp grad  slp      lat     long nt\n1 373.2  9.7 0.05  8.8 44.54626 122.8547 18\n2 197.6  8.1 0.42 33.3 44.79495 122.5471 26\n3 280.0  5.4 0.38 19.3 44.99027 122.9645 18\n4 191.8  4.3 0.07 29.6 44.95022 122.7290 19\n5 445.4  2.3 0.43 16.5 44.79784 122.9836 15\n6 224.5  6.5 0.78  4.1 44.96576 122.9836 21\n\n\nThe goal is to make scatter plots for every response variable vs every explanatory variable. I’ve deemed the first three variables in the data set to be the response variables (elev, resp, grad). The plan is to loop through the variables and make the desired plots. I’m going to use vectors of the variable names for this, one vector for the response variables and one for the explanatory variables. If all of your response or explanatory variables share some unique pattern in the variable names there are some clever ways to pull out the names with some of the select helper functions in dplyr::select(). My variable names are all unique. My options are to either write the vectors out manually or pull the names out by index. I’ll do the latter since the different types of variables are grouped together."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "All Blog Posts",
+    "section": "",
+    "text": "All Blog Posts\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nIntroduction to TidyModel in R\n\n\n\n\n\n\n\n123\n\n\nSecond Tag\n\n\n\n\nThis post will introduce you to how to use tidymodel pacakge in R\n\n\n\n\n\n\nNov 8, 2023\n\n\n2 min\n\n\n\n\n\n\n\n\nFunctional Programming with Purrr\n\n\n\n\n\n\n\n123\n\n\nSecond Tag\n\n\n\n\nThis post will introduce you to how to use purrr pacakge to automate task in R\n\n\n\n\n\n\nJun 7, 2023\n\n\n15 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blogs/intro-to-tidymodel/intro-to-tidymodels.html",
+    "href": "blogs/intro-to-tidymodel/intro-to-tidymodels.html",
+    "title": "Introduction to TidyModel in R",
+    "section": "",
+    "text": "In this blog post, we will explore Tidymodels, a collection of packages for modeling and machine learning using R. This is part of what I learnt in the R for Data Science online Learning Community."
+  },
+  {
+    "objectID": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#basic-introduction-to-tidymodels-using-r",
+    "href": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#basic-introduction-to-tidymodels-using-r",
+    "title": "Introduction to TidyModel in R",
+    "section": "",
+    "text": "In this blog post, we will explore Tidymodels, a collection of packages for modeling and machine learning using R. This is part of what I learnt in the R for Data Science online Learning Community."
+  },
+  {
+    "objectID": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#what-is-tidymodels",
+    "href": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#what-is-tidymodels",
+    "title": "Introduction to TidyModel in R",
+    "section": "What is Tidymodels?",
+    "text": "What is Tidymodels?\nTidymodels is a suite of packages that provides a consistent and flexible approach to modeling in R. It is part of the tidyverse, an ecosystem of R packages designed for data science."
+  },
+  {
+    "objectID": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#installing-tidymodels",
+    "href": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#installing-tidymodels",
+    "title": "Introduction to TidyModel in R",
+    "section": "Installing Tidymodels",
+    "text": "Installing Tidymodels\nTo install Tidymodels, you can use the install.packages() function in R."
+  },
+  {
+    "objectID": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#basic-usage-of-tidymodels",
+    "href": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#basic-usage-of-tidymodels",
+    "title": "Introduction to TidyModel in R",
+    "section": "Basic Usage of Tidymodels",
+    "text": "Basic Usage of Tidymodels\nLet’s go through a simple example of using Tidymodels for linear regression.\n\nLoading the necessary libraries\n\nlibrary(tidymodels)\n\n\n\nPreparing the data\nFor this example, we’ll use the mtcars dataset that comes with R. Let’s split this data into a training set and a testing set.\n\ndata(mtcars)\nset.seed(123)\n\ncar_split &lt;- initial_split(mtcars, prop = 0.75)\n\ncar_train &lt;- training(car_split)\n\ncar_test &lt;- testing(car_split)\n\n\n\nBuilding the model\nWe’ll try to predict miles per gallon (mpg) based on the other variables in the dataset. First, let’s specify our model:\n\nlm_spec &lt;- linear_reg() %&gt;%\nset_engine(\"lm\") %&gt;%\nset_mode(\"regression\")\n\nNext, let’s fit our model to the training data:\n\nlm_fit &lt;- lm_spec %&gt;%\nfit(mpg ~ ., data = car_train)\n\nWe can now use this model to make predictions on the test data:\n\npredictions &lt;- lm_fit %&gt;%\npredict(new_data = car_test)"
+  },
+  {
+    "objectID": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#conclusion",
+    "href": "blogs/intro-to-tidymodel/intro-to-tidymodels.html#conclusion",
+    "title": "Introduction to TidyModel in R",
+    "section": "Conclusion",
+    "text": "Conclusion\nIn this post, we have introduced Tidymodels, a powerful tool for modeling in R. We have seen how to install and use Tidymodels, and how it integrates with the tidyverse ecosystem. With Tidymodels, you can streamline your modeling workflow and make it more consistent and reproducible."
   },
   {
     "objectID": "impressum/index.html",

@@ -1,0 +1,14 @@
+{
+  "hash": "c91fc728e318b0d3017066854fbaa4ef",
+  "result": {
+    "markdown": "---\ntitle: 'Introduction to TidyModel in R'\ndate: '2023-11-08'\ncategories: ['123', 'Second Tag']\ndescription: 'This post will introduce you to how to use tidymodel pacakge in R'\nexecute:\n  message: false\n  warning: false\neditor_options: \n  chunk_output_type: console\nformat:\n  html:\n    comments:\n      utterances:\n         repo: BB1464/oluwafemi-oyedele\n---\n\n\n## Basic Introduction to Tidymodels using R\n\nIn this blog post, we will explore **Tidymodels**, a collection of packages for modeling and machine learning using R. This is part of what I learnt in the R for Data Science online Learning Community.\n\n## What is Tidymodels?\n\nTidymodels is a suite of packages that provides a consistent and flexible approach to modeling in R. It is part of the tidyverse, an ecosystem of R packages designed for data science.\n\n## Installing Tidymodels\n\nTo install Tidymodels, you can use the `install.packages()` function in R. \n\n\n## Basic Usage of Tidymodels\n\nLet's go through a simple example of using Tidymodels for linear regression.\n\n### Loading the necessary libraries\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidymodels)\n```\n:::\n\n\n\n### Preparing the data\n\nFor this example, we'll use the `mtcars` dataset that comes with R. Let's split this data into a training set and a testing set.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ndata(mtcars)\nset.seed(123)\n\ncar_split <- initial_split(mtcars, prop = 0.75)\n\ncar_train <- training(car_split)\n\ncar_test <- testing(car_split)\n```\n:::\n\n\n\n### Building the model\n\nWe'll try to predict miles per gallon (`mpg`) based on the other variables in the dataset. First, let's specify our model:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlm_spec <- linear_reg() %>%\nset_engine(\"lm\") %>%\nset_mode(\"regression\")\n```\n:::\n\n\n\nNext, let's fit our model to the training data:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlm_fit <- lm_spec %>%\nfit(mpg ~ ., data = car_train)\n```\n:::\n\n\n\nWe can now use this model to make predictions on the test data:\n\n\n::: {.cell}\n\n```{.r .cell-code}\npredictions <- lm_fit %>%\npredict(new_data = car_test)\n```\n:::\n\n\n\n## Conclusion\n\nIn this post, we have introduced **Tidymodels**, a powerful tool for modeling in R. We have seen how to **install and use Tidymodels**, and how it integrates with the tidyverse ecosystem. With Tidymodels, you can streamline your modeling workflow and make it more consistent and reproducible.\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
