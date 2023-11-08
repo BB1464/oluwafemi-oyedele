@@ -53,7 +53,7 @@ For this example, we'll use the `mtcars` dataset that comes with R. Let's split 
 #| message: false
 
 data(mtcars)
-set.seed(123)
+set.seed(123) # For reproducibility
 
 car_split <- initial_split(mtcars, prop = 0.75)
 
@@ -97,12 +97,11 @@ We can now use this model to make predictions on the test data:
 predictions <- lm_fit %>%
 predict(new_data = car_test)
 
-```
 
-```{r}
 car_test %>% 
   select(mpg) %>% 
   bind_cols(predict(lm_fit, car_test))
+
 ```
 
 ## Conclusion
