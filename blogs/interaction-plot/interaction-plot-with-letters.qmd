@@ -1,0 +1,224 @@
+---
+title: 'Interaction bar plots with standard error and lettering in R'
+date: '2024-06-02'
+categories: ['123', 'Second Tag']
+description: 'Interraction bar plot in R'
+execute:
+  message: false
+  warning: false
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    comments:
+      utterances:
+         repo: BB1464/oluwafemi-oyedele
+---
+
+# Introduction
+In this blog post, we will go through the steps of quickly creating multiple bar plots with standard error and lettering using R. We will perform an Analysis of Variance (ANOVA) and a Least Significant Difference (LSD) test to understand the effects of different nitrogen (N) rates on rice. Finally, we will create visualizations to present the results. Let’s dive in!
+
+# Load Necessary Libraries
+We begin by loading the required libraries. These libraries will help us with data manipulation, statistical analysis, and visualization.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(agricolae)
+library(reshape2)
+library(readxl)
+```
+
+# Import the Data Set
+Next, we import the dataset from an Excel file named “data_rice.xlsx”. We display the first few rows and the column names to understand the structure of the data.
+
+
+```{r}
+df <- read_excel(path = "data/data_rice.xlsx", col_names = TRUE)
+
+head(df)
+```
+
+```{r}
+names(df)
+```
+
+# Convert Variables to Factors
+We convert the columns rep and Nrate to factors because they represent categorical variables in our analysis. I will make use of the across function from dplyr
+
+```{r}
+df <- df %>% 
+  mutate(across(.cols=c(1:2),.fns=factor))
+```
+
+# View the new structure of the data
+```{r}
+str(df)
+```
+
+# Define Response Variables
+We define response_vars as all columns from the third to the last column in the dataset. These columns represent different growth and yield characteristics.
+
+
+```{r}
+response_vars <- colnames(df)[3:ncol(df)]
+```
+
+# Analysis of Variance (ANOVA)
+We are performing ANOVA (Analysis of Variance) for multiple response variables stored in a list called response_vars. We first initialize an empty list called anova_result to store the ANOVA results for each response variable. The code then iterates over each response variable in response_vars. If a response variable contains a space in its name, it is wrapped in backticks to ensure it is correctly interpreted within the formula.
+
+A formula is then dynamically constructed for each response variable, where the response variable is modeled as a function of two factors: “rep” and “Nrate”. This formula is passed to the aov function, which performs the ANOVA using the data frame df. The resulting ANOVA object is stored in the anova_result list, with the response variable name as the key. For each response variable, the code prints a message indicating that ANOVA is being performed, followed by the summary of the ANOVA results. This process allows us to systematically conduct and review ANOVA for multiple response variables in a dataset.
+
+```{r}
+anova_result <- list()
+
+for (i in response_vars) {
+  if(grepl(" ", i)) {
+    i <- paste0("`", i, "`")
+  }
+  formula <- as.formula(paste(i, "~", "rep", "+", "Nrate"))
+  anova_result[[i]] <- aov(formula, data = df)
+  
+  print(paste("ANOVA for", i))
+  print(summary(anova_result[[i]]))
+}
+
+```
+
+# Least Significant Difference (LSD) Test
+
+Then we conducted post-hoc analysis using the Least Significant Difference (LSD) test for multiple response variables stored in response_vars. We first initialize an empty list called lsd_result to store the LSD test results for each response variable. The code iterates over each response variable in response_vars, and if a variable’s name contains a space, it is enclosed in backticks to ensure it is correctly processed. For each response variable, the LSD test is performed using the corresponding ANOVA result from the previously stored anova_result list, focusing on the treatment factor “Nrate” with a significance level (alpha) of 0.05. The test results, including means and groups, are then merged into a single data frame.
+
+The standard error (SE) for each response variable is calculated by dividing the standard deviation by the square root of the number of replicates. The resulting data frame is stored in the lsd_result list, with each data frame’s column containing the response variable values, means, groups, and standard errors. The column name for the response variable is standardized to “response”. Finally, the results for each response variable are printed. This process ensures a detailed post-hoc analysis following ANOVA, allowing for a clear comparison of treatment means.
+
+```{r}
+
+lsd_result <- list()
+for (i in response_vars) {
+  if(grepl(" ", i)) {
+    i <- paste0("`", i, "`")
+  }
+  lsd_result[[i]] <- LSD.test(anova_result[[i]], trt = "Nrate", alpha = 0.05)
+  lsd_result[[i]] <- merge(x = lsd_result[[i]]$means[1:3], y = lsd_result[[i]]$groups[2], by.x = "row.names", by.y = "row.names", all.x = FALSE)
+  lsd_result[[i]]$SE <- lsd_result[[i]]$std / sqrt(lsd_result[[i]]$r)
+  lsd_result[[i]] <- data.frame(lsd_result[[i]])
+  colnames(lsd_result[[i]])[2] <- "response"
+  print(lsd_result[[i]])
+}
+
+```
+
+# Prepare Data for Plotting
+Next, we are combining the results of the LSD tests for multiple response variables into a single data frame for further analysis or visualization. First, we use do.call() to merge all individual data frames stored in lsd_result into one large data frame called combined_df. We then add a new column, variables, to combined_df to store the row names, which represent the response variable names. The original row names are subsequently removed using rownames(combined_df) <- NULL. The first column of combined_df is renamed to “Nrate” to reflect the treatment levels.
+
+Next, we clean up the variables column by removing any characters following a period (.) using sub() function, which simplifies the variable names. Additionally, backticks are removed from the variable names using gsub() function.
+
+Finally, the Nrate column is converted to a factor with specific levels to ensure that the treatment levels are ordered meaningfully: “Control (No Urea)”, “Urea 25 kg/ha”, “Urea 50 kg/ha”, “Urea 75 kg/ha”, and “Urea 100 kg/ha”. This transformation facilitates easier plotting and interpretation of the results. The resulting combined_df contains the LSD test results for all response variables, with standardized treatment levels and cleaned variable names, ready for further analysis.
+
+```{r}
+combined_df <- do.call(rbind, lsd_result)
+combined_df$variables <- rownames(combined_df)
+rownames(combined_df) <- NULL
+colnames(combined_df)[1] <- "Nrate"
+combined_df$variables <- sub("\\..*", "", combined_df$variables)
+combined_df$variables <- gsub("`", "", combined_df$variables)
+combined_df$Nrate <- factor(combined_df$Nrate, levels = c(
+  "Control (No Urea)",
+  "Urea 25 kg/ha",
+  "Urea 50 kg/ha",
+  "Urea 75 kg/ha",
+  "Urea 100 kg/ha"
+))
+
+```
+
+# Create the Bar Plot
+
+Next, we created a detailed and customized bar plot using the ggplot2 package to visualize the results of the LSD tests for different response variables. The code plots the combined_df data frame, specifically the rows where variables match the names in response_vars.
+
+Setting up the plot: The ggplot function initializes the plot with the data filtered to include only the relevant response variables. The aes function sets up the aesthetic mappings, specifying Nrate on the x-axis, response on the y-axis, and filling the bars based on Nrate.
+Adding bars: The geom_bar function creates bar plots with the specified aesthetics, drawing bars with black borders and setting their position to dodge each other for clarity. The width of the bars is set to 0.9.
+Adding error bars: The geom_errorbar function adds error bars to each bar, representing the standard error (SE). The error bars are positioned to align with the bars and have a width of 0.10.
+Adding text labels: The geom_text function adds text labels above each bar, displaying the group labels. The labels are positioned slightly above the error bars for better visibility.
+Customizing labels and theme: The labs function sets empty titles and labels for the x-axis and fill legend, while the y-axis label is set to “Growth and yield characteristics”. The theme function customizes the axis text to rotate the x-axis labels by 45 degrees for better readability and sets other aesthetic elements like legend position, strip placement, and panel spacing.
+Faceting: The facet_wrap function splits the plot into multiple panels, one for each response variable. Each panel has its own y-axis scale and is arranged in a single column.
+Further customization: The plot’s theme is further customized to remove major and minor grid lines, set the panel background to blank, and ensure the axis lines are clearly visible. The scale_y_continuous function ensures the y-axis scales appropriately with a slight expansion for better spacing.
+Customizing fill colors: The scale_fill_manual function applies a specific color palette from the ggsci package, using the “Journal of Clinical Oncology” (JCO) color palette for the bars.
+This comprehensive code creates a clear, well-labeled, and aesthetically pleasing visualization of the LSD test results, making it easy to compare the effects of different Nrate treatments on various response variables.
+
+```{r}
+
+plot <- ggplot(combined_df[combined_df$variables %in% response_vars, ],
+                aes(x = factor(Nrate),
+                    y = response,
+                    fill = factor(Nrate))) +
+  geom_bar(stat = "identity",
+           color = "black",
+           position = position_dodge(width = 0.5),
+           width = 0.9) +
+  geom_errorbar(aes(ymin = response - SE,
+                    ymax = response + SE),
+                position = position_dodge(width = 0.9),
+                width = 0.10) +
+  geom_text(aes(x = Nrate,
+                y = response + SE,
+                label = as.matrix(groups)),
+            position = position_dodge(width = 0.9),
+            vjust = -0.5,
+            hjust = 0.5) +
+  labs(title = "",
+       x = "",
+       y = "Growth and yield characteristics",
+       fill = "") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(facets = ~variables,
+             ncol = 1,
+             scales = "free_y",
+             switch = "y") +
+  theme(legend.position = "right",
+        strip.placement = "outside",
+        strip.background = element_blank(),
+        panel.spacing = unit(1, "lines")) +
+  scale_y_continuous(expand = expansion(mult = c(0.2, 0.2))) +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line.y = element_line(color = "black", size = 0.5),
+        axis.line.x = element_line(color = "black", size = 0.5)) +
+  scale_fill_manual(values = ggsci::pal_jco()(5))
+
+plot
+
+```
+
+# Customize Labels and Update Plot
+
+Then we defined a custom labeller using the as_labeller function from the ggplot2 package to create more descriptive and formatted facet labels for our plot. The custom labeller is created as a named vector that maps the original variable names to more detailed and readable labels. Specifically, the custom_labeller object associates:
+
+- “Heading” with the label “Heading~(days)”
+
+- “Maturity” with the label “Maturity~(days)”
+
+- “Yield” with the label “Yield~(t~ha^{-1})”
+
+The label_parsed argument is used to ensure that the labels are parsed as expressions, allowing the inclusion of mathematical notation and formatting in the labels. For example, t~ha^{-1} represents tons per hectare with appropriate superscripting. These custom labels enhance the readability and presentation quality of the facet labels in the ggplot, making the plot more informative and visually appealing.
+
+```{r}
+custom_labeller <- as_labeller(c(
+  Heading = "Heading~(days)",
+  Maturity = "Maturity~(days)",
+  Yield = "Yield~(t~ha^{-1})"
+), label_parsed)
+```
+
+Finally, we customize the facet labels for better readability and update the plot accordingly. We updated the labels in facet_wrap() function to use the above modified labels. We display the updated plot using the below code.
+
+```{r}
+plot + facet_wrap(facets = ~variables, 
+                  ncol = 1, 
+                  scales = "free_y", 
+                  switch = "y", 
+                  labeller = custom_labeller)
+```
+

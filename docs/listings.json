@@ -8,6 +8,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blogs/interaction-plot/interaction-plot-with-letters.html",
       "/blogs/intro-to-tidymodel/intro-to-tidymodels.html",
       "/blogs/funtionalProgramming/functions.html"
     ]

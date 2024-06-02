@@ -14,8 +14,855 @@
 <title>Oluwafemi Oyedele</title>
 <link>https://bb1464.github.io/oluwafemi-oyedele/blog.html</link>
 </image>
-<generator>quarto-1.3.433</generator>
-<lastBuildDate>Tue, 07 Nov 2023 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.549</generator>
+<lastBuildDate>Sun, 02 Jun 2024 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Interaction bar plots with standard error and lettering in R</title>
+  <dc:creator>Oluwafemi Oyedele</dc:creator>
+  <link>https://bb1464.github.io/oluwafemi-oyedele/blogs/interaction-plot/interaction-plot-with-letters.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In this blog post, we will go through the steps of quickly creating multiple bar plots with standard error and lettering using R. We will perform an Analysis of Variance (ANOVA) and a Least Significant Difference (LSD) test to understand the effects of different nitrogen (N) rates on rice. Finally, we will create visualizations to present the results. Let’s dive in!</p>
+</section>
+<section id="load-necessary-libraries" class="level1">
+<h1>Load Necessary Libraries</h1>
+<p>We begin by loading the required libraries. These libraries will help us with data manipulation, statistical analysis, and visualization.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(dplyr)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyr)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(agricolae)</span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(reshape2)</span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(readxl)</span></code></pre></div>
+</div>
+</section>
+<section id="import-the-data-set" class="level1">
+<h1>Import the Data Set</h1>
+<p>Next, we import the dataset from an Excel file named “data_rice.xlsx”. We display the first few rows and the column names to understand the structure of the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_excel</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">path =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/data_rice.xlsx"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col_names =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(df)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+    rep Nrate             Heading Maturity Yield
+  &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+1     1 Control (No Urea)    54.2     26.5  2.88
+2     2 Control (No Urea)    78.3     27.0  3.03
+3     3 Control (No Urea)    72.7     26.7  2.76
+4     1 Urea 25 kg/ha        72.5     36.6  3.48
+5     2 Urea 25 kg/ha        84.3     32.1  3.17
+6     3 Urea 25 kg/ha        75.3     34.8  2.93</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">names</span>(df)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "rep"      "Nrate"    "Heading"  "Maturity" "Yield"   </code></pre>
+</div>
+</div>
+</section>
+<section id="convert-variables-to-factors" class="level1">
+<h1>Convert Variables to Factors</h1>
+<p>We convert the columns rep and Nrate to factors because they represent categorical variables in our analysis. I will make use of the across function from dplyr</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> df <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span> </span>
+<span id="cb6-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">across</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.cols=</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>),<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">.fns=</span>factor))</span></code></pre></div>
+</div>
+</section>
+<section id="view-the-new-structure-of-the-data" class="level1">
+<h1>View the new structure of the data</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str</span>(df)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [15 × 5] (S3: tbl_df/tbl/data.frame)
+ $ rep     : Factor w/ 3 levels "1","2","3": 1 2 3 1 2 3 1 2 3 1 ...
+ $ Nrate   : Factor w/ 5 levels "Control (No Urea)",..: 1 1 1 3 3 3 4 4 4 5 ...
+ $ Heading : num [1:15] 54.2 78.3 72.7 72.5 84.3 ...
+ $ Maturity: num [1:15] 26.5 27 26.7 36.6 32.1 ...
+ $ Yield   : num [1:15] 2.88 3.03 2.76 3.48 3.17 ...</code></pre>
+</div>
+</div>
+</section>
+<section id="define-response-variables" class="level1">
+<h1>Define Response Variables</h1>
+<p>We define response_vars as all columns from the third to the last column in the dataset. These columns represent different growth and yield characteristics.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">response_vars <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">colnames</span>(df)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ncol</span>(df)]</span></code></pre></div>
+</div>
+</section>
+<section id="analysis-of-variance-anova" class="level1">
+<h1>Analysis of Variance (ANOVA)</h1>
+<p>We are performing ANOVA (Analysis of Variance) for multiple response variables stored in a list called response_vars. We first initialize an empty list called anova_result to store the ANOVA results for each response variable. The code then iterates over each response variable in response_vars. If a response variable contains a space in its name, it is wrapped in backticks to ensure it is correctly interpreted within the formula.</p>
+<p>A formula is then dynamically constructed for each response variable, where the response variable is modeled as a function of two factors: “rep” and “Nrate”. This formula is passed to the aov function, which performs the ANOVA using the data frame df. The resulting ANOVA object is stored in the anova_result list, with the response variable name as the key. For each response variable, the code prints a message indicating that ANOVA is being performed, followed by the summary of the ANOVA results. This process allows us to systematically conduct and review ANOVA for multiple response variables in a dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">anova_result <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>()</span>
+<span id="cb10-2"></span>
+<span id="cb10-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> response_vars) {</span>
+<span id="cb10-4">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grepl</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span>, i)) {</span>
+<span id="cb10-5">    i <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"`"</span>, i, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"`"</span>)</span>
+<span id="cb10-6">  }</span>
+<span id="cb10-7">  formula <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.formula</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste</span>(i, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"~"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rep"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"+"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Nrate"</span>))</span>
+<span id="cb10-8">  anova_result[[i]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aov</span>(formula, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> df)</span>
+<span id="cb10-9">  </span>
+<span id="cb10-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ANOVA for"</span>, i))</span>
+<span id="cb10-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summary</span>(anova_result[[i]]))</span>
+<span id="cb10-12">}</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ANOVA for Heading"
+            Df Sum Sq Mean Sq F value Pr(&gt;F)  
+rep          2  345.8  172.88   3.147 0.0981 .
+Nrate        4 1211.6  302.90   5.514 0.0198 *
+Residuals    8  439.5   54.94                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+[1] "ANOVA for Maturity"
+            Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+rep          2   26.2   13.08   1.456 0.28879   
+Nrate        4  507.3  126.82  14.126 0.00107 **
+Residuals    8   71.8    8.98                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+[1] "ANOVA for Yield"
+            Df Sum Sq Mean Sq F value  Pr(&gt;F)   
+rep          2  0.160  0.0802   0.377 0.69737   
+Nrate        4  7.487  1.8716   8.801 0.00501 **
+Residuals    8  1.701  0.2127                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="least-significant-difference-lsd-test" class="level1">
+<h1>Least Significant Difference (LSD) Test</h1>
+<p>Then we conducted post-hoc analysis using the Least Significant Difference (LSD) test for multiple response variables stored in response_vars. We first initialize an empty list called lsd_result to store the LSD test results for each response variable. The code iterates over each response variable in response_vars, and if a variable’s name contains a space, it is enclosed in backticks to ensure it is correctly processed. For each response variable, the LSD test is performed using the corresponding ANOVA result from the previously stored anova_result list, focusing on the treatment factor “Nrate” with a significance level (alpha) of 0.05. The test results, including means and groups, are then merged into a single data frame.</p>
+<p>The standard error (SE) for each response variable is calculated by dividing the standard deviation by the square root of the number of replicates. The resulting data frame is stored in the lsd_result list, with each data frame’s column containing the response variable values, means, groups, and standard errors. The column name for the response variable is standardized to “response”. Finally, the results for each response variable are printed. This process ensures a detailed post-hoc analysis following ANOVA, allowing for a clear comparison of treatment means.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">lsd_result <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>()</span>
+<span id="cb12-2"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (i <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> response_vars) {</span>
+<span id="cb12-3">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grepl</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span>, i)) {</span>
+<span id="cb12-4">    i <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paste0</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"`"</span>, i, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"`"</span>)</span>
+<span id="cb12-5">  }</span>
+<span id="cb12-6">  lsd_result[[i]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">LSD.test</span>(anova_result[[i]], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">trt =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Nrate"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">alpha =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span>)</span>
+<span id="cb12-7">  lsd_result[[i]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">merge</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> lsd_result[[i]]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>means[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> lsd_result[[i]]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>groups[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by.x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"row.names"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">by.y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"row.names"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">all.x =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb12-8">  lsd_result[[i]]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>SE <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> lsd_result[[i]]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>std <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(lsd_result[[i]]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>r)</span>
+<span id="cb12-9">  lsd_result[[i]] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(lsd_result[[i]])</span>
+<span id="cb12-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">colnames</span>(lsd_result[[i]])[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"response"</span></span>
+<span id="cb12-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(lsd_result[[i]])</span>
+<span id="cb12-12">}</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Row.names response       std r groups       SE
+1 Control (No Urea) 68.44509 12.609047 3      c 7.279837
+2    Urea 100 kg/ha 87.97074  5.763612 3     ab 3.327623
+3     Urea 25 kg/ha 77.39595  6.182959 3     bc 3.569733
+4     Urea 50 kg/ha 80.05120  4.757606 3     bc 2.746805
+5     Urea 75 kg/ha 94.64645 11.813072 3      a 6.820281
+          Row.names response       std r groups        SE
+1 Control (No Urea) 26.74720 0.2452797 3      d 0.1416123
+2    Urea 100 kg/ha 39.30555 3.5689391 3     ab 2.0605280
+3     Urea 25 kg/ha 34.49546 2.2648864 3     bc 1.3076328
+4     Urea 50 kg/ha 33.48755 5.2644154 3      c 3.0394116
+5     Urea 75 kg/ha 44.04475 1.8292321 3      a 1.0561076
+          Row.names response       std r groups         SE
+1 Control (No Urea) 2.890565 0.1376631 3      b 0.07947983
+2    Urea 100 kg/ha 2.710516 0.3322514 3      b 0.19182546
+3     Urea 25 kg/ha 3.191620 0.2721221 3      b 0.15710978
+4     Urea 50 kg/ha 2.861858 0.7981537 3      b 0.46081427
+5     Urea 75 kg/ha 4.636202 0.3007376 3      a 0.17363091</code></pre>
+</div>
+</div>
+</section>
+<section id="prepare-data-for-plotting" class="level1">
+<h1>Prepare Data for Plotting</h1>
+<p>Next, we are combining the results of the LSD tests for multiple response variables into a single data frame for further analysis or visualization. First, we use do.call() to merge all individual data frames stored in lsd_result into one large data frame called combined_df. We then add a new column, variables, to combined_df to store the row names, which represent the response variable names. The original row names are subsequently removed using rownames(combined_df) &lt;- NULL. The first column of combined_df is renamed to “Nrate” to reflect the treatment levels.</p>
+<p>Next, we clean up the variables column by removing any characters following a period (.) using sub() function, which simplifies the variable names. Additionally, backticks are removed from the variable names using gsub() function.</p>
+<p>Finally, the Nrate column is converted to a factor with specific levels to ensure that the treatment levels are ordered meaningfully: “Control (No Urea)”, “Urea 25 kg/ha”, “Urea 50 kg/ha”, “Urea 75 kg/ha”, and “Urea 100 kg/ha”. This transformation facilitates easier plotting and interpretation of the results. The resulting combined_df contains the LSD test results for all response variables, with standardized treatment levels and cleaned variable names, ready for further analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">combined_df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">do.call</span>(rbind, lsd_result)</span>
+<span id="cb14-2">combined_df<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>variables <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rownames</span>(combined_df)</span>
+<span id="cb14-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rownames</span>(combined_df) <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span></span>
+<span id="cb14-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">colnames</span>(combined_df)[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Nrate"</span></span>
+<span id="cb14-5">combined_df<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>variables <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sub</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">..*"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>, combined_df<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>variables)</span>
+<span id="cb14-6">combined_df<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>variables <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gsub</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"`"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>, combined_df<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>variables)</span>
+<span id="cb14-7">combined_df<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Nrate <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(combined_df<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>Nrate, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb14-8">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Control (No Urea)"</span>,</span>
+<span id="cb14-9">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Urea 25 kg/ha"</span>,</span>
+<span id="cb14-10">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Urea 50 kg/ha"</span>,</span>
+<span id="cb14-11">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Urea 75 kg/ha"</span>,</span>
+<span id="cb14-12">  <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Urea 100 kg/ha"</span></span>
+<span id="cb14-13">))</span></code></pre></div>
+</div>
+</section>
+<section id="create-the-bar-plot" class="level1">
+<h1>Create the Bar Plot</h1>
+<p>Next, we created a detailed and customized bar plot using the ggplot2 package to visualize the results of the LSD tests for different response variables. The code plots the combined_df data frame, specifically the rows where variables match the names in response_vars.</p>
+<p>Setting up the plot: The ggplot function initializes the plot with the data filtered to include only the relevant response variables. The aes function sets up the aesthetic mappings, specifying Nrate on the x-axis, response on the y-axis, and filling the bars based on Nrate. Adding bars: The geom_bar function creates bar plots with the specified aesthetics, drawing bars with black borders and setting their position to dodge each other for clarity. The width of the bars is set to 0.9. Adding error bars: The geom_errorbar function adds error bars to each bar, representing the standard error (SE). The error bars are positioned to align with the bars and have a width of 0.10. Adding text labels: The geom_text function adds text labels above each bar, displaying the group labels. The labels are positioned slightly above the error bars for better visibility. Customizing labels and theme: The labs function sets empty titles and labels for the x-axis and fill legend, while the y-axis label is set to “Growth and yield characteristics”. The theme function customizes the axis text to rotate the x-axis labels by 45 degrees for better readability and sets other aesthetic elements like legend position, strip placement, and panel spacing. Faceting: The facet_wrap function splits the plot into multiple panels, one for each response variable. Each panel has its own y-axis scale and is arranged in a single column. Further customization: The plot’s theme is further customized to remove major and minor grid lines, set the panel background to blank, and ensure the axis lines are clearly visible. The scale_y_continuous function ensures the y-axis scales appropriately with a slight expansion for better spacing. Customizing fill colors: The scale_fill_manual function applies a specific color palette from the ggsci package, using the “Journal of Clinical Oncology” (JCO) color palette for the bars. This comprehensive code creates a clear, well-labeled, and aesthetically pleasing visualization of the LSD test results, making it easy to compare the effects of different Nrate treatments on various response variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">plot <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(combined_df[combined_df<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>variables <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%in%</span> response_vars, ],</span>
+<span id="cb15-2">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(Nrate),</span>
+<span id="cb15-3">                    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> response,</span>
+<span id="cb15-4">                    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(Nrate))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_bar</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">stat =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"identity"</span>,</span>
+<span id="cb15-6">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>,</span>
+<span id="cb15-7">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">position_dodge</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),</span>
+<span id="cb15-8">           <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_errorbar</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymin =</span> response <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> SE,</span>
+<span id="cb15-10">                    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ymax =</span> response <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> SE),</span>
+<span id="cb15-11">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">position_dodge</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>),</span>
+<span id="cb15-12">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.10</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_text</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> Nrate,</span>
+<span id="cb15-14">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> response <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> SE,</span>
+<span id="cb15-15">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">label =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.matrix</span>(groups)),</span>
+<span id="cb15-16">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">position =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">position_dodge</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">width =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>),</span>
+<span id="cb15-17">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vjust =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>,</span>
+<span id="cb15-18">            <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hjust =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb15-20">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb15-21">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Growth and yield characteristics"</span>,</span>
+<span id="cb15-22">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-23">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.text.x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">angle =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">hjust =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-24">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">facets =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>variables,</span>
+<span id="cb15-25">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,</span>
+<span id="cb15-26">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">scales =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"free_y"</span>,</span>
+<span id="cb15-27">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">switch =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-28">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span>,</span>
+<span id="cb15-29">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">strip.placement =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"outside"</span>,</span>
+<span id="cb15-30">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">strip.background =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb15-31">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.spacing =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unit</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lines"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-32">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">expand =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expansion</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mult =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>))) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-33">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.major =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb15-34">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.grid.minor =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb15-35">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">panel.background =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_blank</span>(),</span>
+<span id="cb15-36">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.line.y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_line</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),</span>
+<span id="cb15-37">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.line.x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_line</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-38">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_manual</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">values =</span> ggsci<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pal_jco</span>()(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>))</span>
+<span id="cb15-39"></span>
+<span id="cb15-40">plot</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/interaction-plot/interaction-plot-with-letters_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="customize-labels-and-update-plot" class="level1">
+<h1>Customize Labels and Update Plot</h1>
+<p>Then we defined a custom labeller using the as_labeller function from the ggplot2 package to create more descriptive and formatted facet labels for our plot. The custom labeller is created as a named vector that maps the original variable names to more detailed and readable labels. Specifically, the custom_labeller object associates:</p>
+<ul>
+<li><p>“Heading” with the label “Heading~(days)”</p></li>
+<li><p>“Maturity” with the label “Maturity~(days)”</p></li>
+<li><p>“Yield” with the label “Yield<sub>(t</sub>ha^{-1})”</p></li>
+</ul>
+<p>The label_parsed argument is used to ensure that the labels are parsed as expressions, allowing the inclusion of mathematical notation and formatting in the labels. For example, t~ha^{-1} represents tons per hectare with appropriate superscripting. These custom labels enhance the readability and presentation quality of the facet labels in the ggplot, making the plot more informative and visually appealing.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1">custom_labeller <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as_labeller</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(</span>
+<span id="cb16-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Heading =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Heading~(days)"</span>,</span>
+<span id="cb16-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Maturity =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Maturity~(days)"</span>,</span>
+<span id="cb16-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Yield =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Yield~(t~ha^{-1})"</span></span>
+<span id="cb16-5">), label_parsed)</span></code></pre></div>
+</div>
+<p>Finally, we customize the facet labels for better readability and update the plot accordingly. We updated the labels in facet_wrap() function to use the above modified labels. We display the updated plot using the below code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">plot <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">facet_wrap</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">facets =</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span>variables, </span>
+<span id="cb17-2">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, </span>
+<span id="cb17-3">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">scales =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"free_y"</span>, </span>
+<span id="cb17-4">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">switch =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>, </span>
+<span id="cb17-5">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labeller =</span> custom_labeller)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/interaction-plot/interaction-plot-with-letters_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+
+ ]]></description>
+  <category>123</category>
+  <category>Second Tag</category>
+  <guid>https://bb1464.github.io/oluwafemi-oyedele/blogs/interaction-plot/interaction-plot-with-letters.html</guid>
+  <pubDate>Sun, 02 Jun 2024 05:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Introduction to TidyModel in R</title>
   <dc:creator>Oluwafemi Oyedele</dc:creator>
@@ -183,7 +1030,7 @@ Pontiac Firebird    19.2 16.27870</code></pre>
   <category>123</category>
   <category>Second Tag</category>
   <guid>https://bb1464.github.io/oluwafemi-oyedele/blogs/intro-to-tidymodel/intro-to-tidymodels.html</guid>
-  <pubDate>Tue, 07 Nov 2023 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 08 Nov 2023 06:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Functional Programming with Purrr</title>
@@ -883,7 +1730,7 @@ $grad</code></pre>
   <category>123</category>
   <category>Second Tag</category>
   <guid>https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions.html</guid>
-  <pubDate>Tue, 06 Jun 2023 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 07 Jun 2023 05:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
