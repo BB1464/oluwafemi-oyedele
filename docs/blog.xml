@@ -871,6 +871,7 @@ font-style: inherit;">labeller =</span> custom_labeller)</span></code></pre></di
 
 
 
+
 <section id="basic-introduction-to-tidymodels-using-r" class="level2">
 <h2 class="anchored" data-anchor-id="basic-introduction-to-tidymodels-using-r">Basic Introduction to Tidymodels using R</h2>
 <p>In this blog post, we will explore <strong>Tidymodels</strong>, a collection of packages for modeling and machine learning using R. This is part of what I learnt in the R for Data Science online Learning Community.</p>
@@ -1037,6 +1038,7 @@ Pontiac Firebird    19.2 16.27870</code></pre>
   <dc:creator>Oluwafemi Oyedele</dc:creator>
   <link>https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions.html</link>
   <description><![CDATA[ 
+
 
 
 
@@ -1324,7 +1326,11 @@ font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"elev"</span>)</span></code></pre></div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1363,28 +1369,44 @@ font-style: inherit;">"elev"</span>) )</span></code></pre></div>
 <pre><code>$slp</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $lat</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $long</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $nt</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1452,14 +1474,22 @@ font-style: inherit;">2</span>]</span></code></pre></div>
 <pre><code>$slp</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $lat</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>If I want to print a single plot, I can first extract one of the sub-lists using an outer list name and then extract the individual plot via an inner list name.</p>
@@ -1470,7 +1500,11 @@ font-style: inherit;">$</span>grad<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>long</span></code></pre></div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>I find the names convenient, but you can also extract plots via position. Here’s the same graph, the third element of the third list.</p>
@@ -1481,7 +1515,11 @@ font-style: inherit;">3</span>]][[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>]]</span></code></pre></div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1680,7 +1718,11 @@ font-style: inherit;">plotlist =</span> all_plots[[<span class="dv" style="color
 background-color: null;
 font-style: inherit;">1</span>]])</span></code></pre></div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We can use a loop to combine the plots for each response variable sub-list. The result could then be saved using any of the approaches shown above. If you have many subplots per combined plot you likely will want to save the plots at a larger size so the individual plots can be clearly seen.</p>
@@ -1703,21 +1745,33 @@ font-style: inherit;">plotlist =</span> .x))</span>
 <pre><code>$elev</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $resp</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 $grad</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-3.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="https://bb1464.github.io/oluwafemi-oyedele/blogs/funtionalProgramming/functions_files/figure-html/unnamed-chunk-22-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>To learn more on functional programming in R you can look at Jenny Bryan blog post on functional programming <a href="https://jennybc.github.io/purrr-tutorial/"><strong>here</strong></a></p>
